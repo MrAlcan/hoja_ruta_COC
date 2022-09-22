@@ -31,6 +31,7 @@ $db = mysqli_select_db($conexion, $basededatos) or die ("Error conexion al conec
     echo "<script>console.log('$descripcion')</script>";
     $sig_area = $_POST['sig_area'];
     echo "<script>console.log('$sig_area')</script>";
+    $observacion = $_POST['obser'];
 
     //sentencia sql
     $sql = "INSERT INTO `procedimiento`(`codigo_hoja_ruta`,`fecha_creada`,`solicitante`,`descripcion_solicitud`,`id_area_creada`,`id_tipo_procedimiento_realizado`) VALUES ('$n_reg','$fecha','$solicitante','$descripcion','$ses','$tip_proc')";
@@ -61,7 +62,7 @@ $db = mysqli_select_db($conexion, $basededatos) or die ("Error conexion al conec
         }
         echo "<script>console.log('$n_proc')</script>";
 
-        $sql_2 = "INSERT INTO `flujo_procedimiento`(`id_procedimiento_flujo`,`id_area_procedencia`,`id_area_destino`,`id_usuario_envia`) VALUES ('$n_proc','$ses','$sig_area','$id_user')";
+        $sql_2 = "INSERT INTO `flujo_procedimiento`(`id_procedimiento_flujo`,`id_area_procedencia`,`id_area_destino`,`id_usuario_envia`,`observaciones`) VALUES ('$n_proc','$ses','$sig_area','$id_user','$observacion')";
 
         $ejecutar_2=mysqli_query($conexion, $sql_2);
 

@@ -37,6 +37,7 @@
         $n_registro_a=$_GET['n_reg'];
         $area_proc_a = $_GET['area_p'];
         $tipo_procedimiento_a = $_GET['tipo_procedimiento'];
+		$fecha_a = $_GET['fecha'];
 
         require("conexion.php");
 		session_start();
@@ -50,7 +51,14 @@
         $arreglo=mysqli_fetch_array($query);
 
         $solicitante_a = $arreglo[3];
-        $descripcion_a = $arreglo[4]; 
+        $descripcion_a = $arreglo[4];
+
+
+		$sql3 = ("SELECT procedimiento.codigo_hoja_ruta, flujo_procedimiento.observaciones, areas.nombre_area FROM flujo_procedimiento INNER JOIN areas ON flujo_procedimiento.id_area_procedencia = areas.id_area INNER JOIN procedimiento ON procedimiento.id_procedimiento = flujo_procedimiento.id_procedimiento_flujo WHERE procedimiento.codigo_hoja_ruta = $n_registro_a");
+
+		$query3 = mysqli_query($mysqli,$sql3);
+
+
 
 
     ?>
@@ -112,8 +120,11 @@
 
 				<div class="row form-group">
 					<div class="col-md-6">
-						<label for="date">Fecha de ingreso</label>
-						<input type="date" name="fecha" id="date" class="form-control">
+						<label for="date">Fecha enviada</label>
+						<?php
+                            echo "<input type='date' name='fecha' id='fecha' class='form-control' value='$fecha_a' readonly>";
+                        ?>
+						<!--input type="date" name="fecha" id="date" class="form-control"-->
 					</div>
 				</div>
 				
@@ -126,13 +137,35 @@
 						
 					</div>
 				</div>
+				
+				<div class="row form-group">
+					<div class="col-md-6">
+						<label for="obser">OBSERVACIONES PASADAS</label>
+						<?php
+
+							$observaciones_totales='';
+						
+							while($arreglo3=mysqli_fetch_array($query3)){
+								$observaciones_totales = $observaciones_totales . $arreglo3[2] . ' - ' . $arreglo3[1] . '\n';
+							}
+
+							echo "<script>console.log('$observaciones_totales')</script>";
+
+							echo "<textarea type='textarea' name='observaciones_pasadas' id='observaciones_pasadas' class='form-control' readonly>$observaciones_totales</textarea>";
+						
+						?>
+						
+					</div>
+				</div>
 
 				<div class="row form-group">
 					<div class="col-md-6">
 						<label for="obser">OBSERVACIONES</label>
-						<input type="textarea" name="obser" id="obser" class="form-control">
+						<textarea type="textarea" name="obser" id="obser" class="form-control"></textarea>
 					</div>
 				</div>
+
+				
 
 				<div class="row form-group">
 					<div class="col-md-6">

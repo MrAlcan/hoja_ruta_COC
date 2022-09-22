@@ -89,6 +89,24 @@ CREATE TABLE flujo_procedimiento(
     FOREIGN KEY (id_usuario_envia) REFERENCES usuarios(ci)
 );
 
+-- ALTERNATIVA A FLUJO DE PROCEDIMIENTOS
+
+CREATE TABLE flujo_procedimiento(
+    id_flujo INT NOT NULL,
+    id_procedimiento_flujo INT NOT NULL,
+    id_area_procedencia INT NOT NULL,
+    id_area_destino INT NOT NULL,
+    id_usuario_envia INT NOT NULL,
+    observaciones TEXT,
+    fecha_subido TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_procedimiento_flujo) REFERENCES procedimiento(id_procedimiento),
+    FOREIGN KEY (id_area_procedencia) REFERENCES areas(id_area),
+    FOREIGN KEY (id_area_destino) REFERENCES areas(id_area),
+    FOREIGN KEY (id_usuario_envia) REFERENCES usuarios(ci)
+);
+
+-- FIN DE LA ALTERNATIVA
+
 ALTER TABLE flujo_procedimiento
     ADD PRIMARY KEY (id_flujo);
 
@@ -149,7 +167,7 @@ SELECT MAX(id_flujo), id_procedimiento_flujo, id_area_procedencia, id_area_desti
 FROM flujo_procedimiento
 GROUP BY id_procedimiento_flujo DESC;
 
-CREATE VIEW `flujos_procedimientos_2` AS
+CREATE VIEW `flujos_procedimientos` AS
 SELECT MAX(id_flujo) AS id_flujo_prc, id_procedimiento_flujo, id_area_procedencia, id_area_destino, id_usuario_envia
 FROM flujo_procedimiento
 GROUP BY id_procedimiento_flujo, id_area_procedencia, id_area_destino, id_usuario_envia DESC;
@@ -167,7 +185,7 @@ CREATE VIEW `documentos_procedencia`
     INNER JOIN `usuarios` ON flujo_procedimiento.id_usuario_envia = usuarios.ci;
 
 CREATE VIEW `documentos_procedencia`
-	AS SELECT flujos_procedimientos.id_flujo_prc, procedimiento.`codigo_hoja_ruta`, tipo_procedimiento.`nombre_tipo_procedimiento`, procedimiento.`solicitante`, areas.`nombre_area`, usuarios.`nombre_usuario`, flujo_procedimiento.id_area_procedencia, flujo_procedimiento.id_area_destino, procedimiento.descripcion_solicitud
+	AS SELECT flujos_procedimientos.id_flujo_prc, procedimiento.`codigo_hoja_ruta`, tipo_procedimiento.`nombre_tipo_procedimiento`, procedimiento.`solicitante`, areas.`nombre_area`, usuarios.`nombre_usuario`, flujo_procedimiento.id_area_procedencia, flujo_procedimiento.id_area_destino, procedimiento.descripcion_solicitud, flujo_procedimiento.fecha_subido
     FROM `flujos_procedimientos` INNER JOIN `flujo_procedimiento` ON flujo_procedimiento.id_flujo = flujos_procedimientos.id_flujo_prc
     INNER JOIN `procedimiento` ON flujo_procedimiento.id_procedimiento_flujo = procedimiento.id_procedimiento
     INNER JOIN `areas` ON flujo_procedimiento.id_area_procedencia = areas.id_area
@@ -202,6 +220,14 @@ CREATE VIEW `documentos_destino`
     INNER JOIN `areas` ON flujo_procedimiento.id_area_destino = areas.id_area
     INNER JOIN `tipo_procedimiento` ON procedimiento.id_tipo_procedimiento_realizado = tipo_procedimiento.id_tipo_procedimiento
     INNER JOIN `usuarios` ON flujo_procedimiento.id_usuario_envia = usuarios.ci;
+
+
+CREATE VIEW `documentos_destino`
+	AS SELECT flujo_procedimiento.`id_flujo` AS id_flujo_prc, procedimiento.`codigo_hoja_ruta`, tipo_procedimiento.`nombre_tipo_procedimiento`, procedimiento.`solicitante`, areas.`nombre_area`, usuarios.`nombre_usuario`, flujo_procedimiento.id_area_procedencia, flujo_procedimiento.id_area_destino, procedimiento.descripcion_solicitud
+    FROM `flujo_procedimiento` INNER JOIN `procedimiento` ON flujo_procedimiento.id_procedimiento_flujo = procedimiento.id_procedimiento
+    INNER JOIN `areas` ON flujo_procedimiento.id_area_destino = areas.id_area
+    INNER JOIN `usuarios` ON flujo_procedimiento.id_usuario_envia = usuarios.ci
+    INNER JOIN `tipo_procedimiento` ON procedimiento.id_tipo_procedimiento_realizado = tipo_procedimiento.id_tipo_procedimiento;
 
 
 
