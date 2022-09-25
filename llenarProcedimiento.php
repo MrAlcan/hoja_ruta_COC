@@ -33,6 +33,17 @@ $db = mysqli_select_db($conexion, $basededatos) or die ("Error conexion al conec
     echo "<script>console.log('$sig_area')</script>";
     $observacion = $_POST['obser'];
 
+    //PRUEBAS PARA SUBIR ARCHIVOS
+    $nombreArchivo=$_FILES['archivo']['name'];
+    $tamanoArchivo=$_FILES['archivo']['size'];
+    $tipoArchivo=$_FILES['archivo']['type'];
+    $tempArchivo=$_FILES['archivo']['tmp_name'];
+    // $caption1=$_POST['caption'];
+    // $link=$_POST['link'];
+    
+
+    //FIN PRUEBAS PARA SUBIR ARCHIVOS
+
     //sentencia sql
     $sql = "INSERT INTO `procedimiento`(`codigo_hoja_ruta`,`fecha_creada`,`solicitante`,`descripcion_solicitud`,`id_area_creada`,`id_tipo_procedimiento_realizado`) VALUES ('$n_reg','$fecha','$solicitante','$descripcion','$ses','$tip_proc')";
     
@@ -71,8 +82,53 @@ $db = mysqli_select_db($conexion, $basededatos) or die ("Error conexion al conec
             // echo "<script>location.href='nuevo.php'</script>";	
         }else{
             echo '<script>alert("Su registro de flujo de procedimiento se realizo correctamente ")</script> ';
+            //----------------------
+            $sql_4=("SELECT * FROM flujo_procedimiento WHERE id_procedimiento_flujo=$n_proc AND id_area_procedencia=$ses AND id_area_destino=$sig_area");
+            $ejecutar_4=mysqli_query($conexion, $sql_4);
+            $n_flujo_a=0;
+            $fecha_subido;
+
+            while($arreglo_4=mysqli_fetch_array($ejecutar_4)){
+                $n_flujo_a=$arreglo_4[0];
+                $fecha_subido=$arreglo_4[6];
+            }
+
+            $sql_5=("SELECT * FROM areas WHERE id_area=$ses");
+            $ejecutar_5=mysqli_query($conexion, $sql_5);
+
+            $nombreArea="";
+            while($arreglo_5=mysqli_fetch_array($ejecutar_5)){
+                $nombreArea=$arreglo_5[1];
+            }
+
+            $nombreArchivo = $n_reg .'_'.$nombreArea.'_'.$n_flujo_a;
+            $fname = date("YmdHis").'_'.$nombreArchivo;
+            $directorio = "archivospdf/".$fname;
+
+            $move =  move_uploaded_file($tempArchivo,"archivospdf/".$fname);
+            if($move){
+
+                $sql_6 = "INSERT INTO `documento_subido`(`nombre_archivo`,`directorio`,`fecha_subido`,`id_usuario_subido`,`id_procedimiento_subido`,`id_flujo_subido`) VALUES ('$nombreArchivo','$directorio','$fecha_subido','$id_user','$n_proc','$n_flujo_a')";
+
+                $ejecutar_6=mysqli_query($conexion, $sql_6);
+
+                if(!$ejecutar_6){
+                    echo '<script>alert("huvo algun error registro de documento subido")</script> ';
+                    // echo "<script>location.href='nuevo.php'</script>";	
+                }else{
+                    echo '<script>alert("Su registro de documento subido se realizo correctamente ")</script> ';
+                    echo "<script>location.href='inicio.php'</script>";	
+                }
+
+                
+            }
             
-            echo "<script>location.href='inicio.php'</script>";	
+
+
+
+            //------------------------
+            
+            //echo "<script>location.href='inicio.php'</script>";	
         }
 
         

@@ -80,7 +80,7 @@
 		<div class="tab-content-inner active m-5" data-content="signup">
 			<h3>Registra el nuevo registro</h3>
 
-			<form action="llenarFlujo.php" method="POST" >
+			<form enctype="multipart/form-data" action="llenarFlujo.php" name="form" method="POST">
 
 
 				<div class="row form-group">
@@ -196,6 +196,13 @@
 						?>
 																
 						</select>
+					</div>
+				</div>
+
+				<div class="row form-group">
+					<div class="col-md-6">
+						<label for="archivo">SUBIR ARCHIVO</label>
+						<input type="file" name="archivo" id="archivo" class="form-control">
 					</div>
 				</div>
 
