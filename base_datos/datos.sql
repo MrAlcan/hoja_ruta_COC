@@ -5,7 +5,8 @@ INSERT INTO `areas`(`id_area`,`nombre_area`,`descripcion_area`) VALUES (1,'Secre
 (3,'juridica','DESCRIPCION'),
 (4,'auditoria','DESCRIPCION'),
 (5,'sistemas','DESCRIPCION'),
-(6,'cartera','DESCRIPCION');
+(6,'cartera','DESCRIPCION'),
+(100,'TERMINADO','DESCRIPCION');
 
 INSERT INTO `roles`(`id_rol`,`nombre_rol`) VALUES (1,'Administrador'),
 (2,'USUARIO_NORMAL');
@@ -16,7 +17,8 @@ INSERT INTO `usuarios`(`ci`,`nombre_usuario`,`apellido_paterno`,`apellido_matern
 (12863503,'JUAN','APAZA','GUTIERREZ','eljuanardilla','Ardillita1*','eljuanardilla@gmail.com',4,2),
 (12863504,'BORIS','SOTO','CHAMBI','elborisardilla','Ardillita1*','elborisardilla@gmail.com',5,2),
 (12863505,'ARACELY','PLATA','CHOQUE','elaracelyardilla','Ardillita1*','elaracelyardilla@gmail.com',6,2),
-(12863506,'KARLA','YUJRA','CHAMBI','elkarlaardilla','Ardillita1*','elkarlaardilla@gmail.com',1,2);
+(12863506,'KARLA','YUJRA','CHAMBI','elkarlaardilla','Ardillita1*','elkarlaardilla@gmail.com',1,2),
+(12863507,'ADMIN','ADMIN','ADMIN','admin','Ardillita1*','admin@gmail.com',100,1);
 
 INSERT INTO `tipo_procedimiento`(`id_tipo_procedimiento`,`nombre_tipo_procedimiento`,`descripcion_tipo_procedimiento`) VALUES (1,'PRESTAMO','SOLICITUD DE PRESTAMO'),
 (2,'RETIRO','SOLICITUD DE RETIRO'),

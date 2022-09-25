@@ -20,6 +20,18 @@
 				</div>
 				<div class="col-xs-8 text-right menu-1">
 					<ul>
+
+						<?php
+                            session_start();
+                            $ses = $_SESSION['area'];
+                            $rol = $_SESSION['rol'];
+                            
+
+                            if($rol == 1){
+                                echo "<li><a href='flujoActual.php'>Flujo actual</a></li>";
+                            }
+
+                        ?>
 						
 						<li><a href="inicio.php">Inicio</a></li>
 						<li><a href="pendientes.php">Pendientes</a></li>
@@ -122,7 +134,7 @@
 					<div class="col-md-6">
 						<label for="date">Fecha enviada</label>
 						<?php
-                            echo "<input type='date' name='fecha' id='fecha' class='form-control' value='$fecha_a' readonly>";
+                            echo "<input type='text' name='fecha' id='fecha' class='form-control' value='$fecha_a' disabled>";
                         ?>
 						<!--input type="date" name="fecha" id="date" class="form-control"-->
 					</div>
@@ -140,13 +152,13 @@
 				
 				<div class="row form-group">
 					<div class="col-md-6">
-						<label for="obser">OBSERVACIONES PASADAS</label>
+						<label for="observaciones_pasadas">OBSERVACIONES PASADAS</label>
 						<?php
 
 							$observaciones_totales='';
 						
 							while($arreglo3=mysqli_fetch_array($query3)){
-								$observaciones_totales = $observaciones_totales . $arreglo3[2] . ' - ' . $arreglo3[1] . '\n';
+								$observaciones_totales = $observaciones_totales . $arreglo3[2] . ' - ' . $arreglo3[1] . "\n";
 							}
 
 							echo "<script>console.log('$observaciones_totales')</script>";

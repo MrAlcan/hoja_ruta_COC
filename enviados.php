@@ -23,8 +23,12 @@
                         <?php
                             session_start();
                             $ses = $_SESSION['area'];
+							$rol = $_SESSION['rol'];
                             if($ses == 1){
                                 echo "<li><a href='nuevo.php'>Nuevo registro</a></li>";
+                            }
+							if($rol == 1){
+                                echo "<li><a href='flujoActual.php'>Flujo actual</a></li>";
                             }
                             
                         

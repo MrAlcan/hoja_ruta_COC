@@ -20,20 +20,17 @@
 				</div>
 				<div class="col-xs-8 text-right menu-1">
 					<ul>
+                        <li><a href="inicio.php">Inicio</a></li>
                         <?php
                             session_start();
                             $ses = $_SESSION['area'];
-                            if($ses == 1){
-                                echo "<li><a href='nuevo.php'>Nuevo registro</a></li>";
-                            }
-                            
-                        
-                        
-                
-                            
                             $rol = $_SESSION['rol'];
                             
-                            
+                            if($ses == 1){
+                                echo "<li><a href='nuevo.php'>Nuevo registro</a></li>";
+                                echo "<li><a href='pendientes.php'>Pendientes</a></li>";
+                                echo "<li><a href='enviados.php'>Enviados</a></li>";
+                            }
 
                             if($rol == 1){
                                 echo "<li><a href='flujoActual.php'>Flujo actual</a></li>";
@@ -41,9 +38,6 @@
 
                         ?>
 						
-						<li><a href="inicio.php">Inicio</a></li>
-						<li><a href="pendientes.php">Pendientes</a></li>
-						<li><a href="enviados.php">Enviados</a></li>
 						<li><a href="desconectar.php"><font color="black">Salir</font></a></li>
 					</ul>
 				</div>
@@ -57,25 +51,28 @@
 			<div class="row">
 				<div class="col-md-8 col-md-offset-2 text-center gtco-heading">
 					<h2>COOPERATIVA APOSTOL SANTIAGO</h2>
-					<p>DOCUMENTOS PENDIENTES</p>
+					<p>FLUJO ACTUAL DE DOCUMENTOS</p>
 				</div>
 			</div>
 			<div class="row">
 
 
-			<center><p>PENDIENTES</p></center>
+			<center><p>FLUJO ACTUAL</p></center>
 
 				<div class="table-responsive">          
 					<table class="table">
 						<thead>
 						<tr>
-							<th>N° hoja de ruta</th>
+                            <th>N° hoja de ruta</th>
 							<th>Tipo de Solicitud</th>
 							<th>Solicitante</th>
-							<th>Area de Procedencia</th>
-							<th>Usuario que envio</th>
-							<th>Modificar</th>
-							<!--th>Fecha de Salida</th-->
+							<th>Area Procedencia</th>
+                            <th>Usuario que envio</th>
+                            <th>Area Destino</th>
+                            <th>Fecha enviada</th>
+							<!--th>Fecha de Salida</th>
+							<th>Hora de Salida</th>
+                            <th>Precio</th-->
 						</tr>
 						</thead>
 
@@ -86,7 +83,7 @@
                             require("conexion.php");
 
 							
-							$sql=("SELECT * FROM documentos_procedencia WHERE id_area_destino=$ses");
+							$sql=("SELECT * FROM flujo_actual");
 
 							$query=mysqli_query($mysqli,$sql);
 							
@@ -101,20 +98,11 @@
                                     echo "<td>$arreglo[1]</td>";
                                     echo "<td>$arreglo[2]</td>";
                                     echo "<td>$arreglo[3]</td>";
-									echo "<td>$arreglo[4]</td>";
-									echo "<td>$arreglo[5]</td>";
-
-
-						
-								
-
-
-									echo "<td><a href='completar.php?n_reg=$arreglo[1]&area_p=$arreglo[4]&tipo_procedimiento=$arreglo[2]&fecha=$arreglo[9]'><button class='btn btn-info'><font size='2'>Completar</font></button></a></td>";
-
-									/*echo "<td><a href='completar.php?variable=<?php echo urlencode(`$arreglo[1]`);?>'><button class='btn btn-info'><font size='2'>Completar</font></button></a></td>";
-								*/
-                                    
-                                echo `</tr>`;
+                                    echo "<td>$arreglo[4]</td>";
+                                    echo "<td>$arreglo[5]</td>";
+                                    echo "<td>$arreglo[6]</td>";
+                                    echo "<td>$arreglo[7]</td>";
+                                echo "</tr>";
                                 $num = $num + 1;
 							}
 															
@@ -129,15 +117,7 @@
 
 			</div>
 		</div>
-		<?php
-			if($ses == 1){
-				echo "<center>
-				<a href='nuevo.php'>				
-					<button class='btn btn-info'><font size='4'>Agregar Documento</font></button>
-				</a>
-			</center>";
-			}
-		?>
+		
         <!--center>
             <a href="nuevo.php">				
                 <button class="btn btn-info"><font size="4">Agregar Documento</font></button>

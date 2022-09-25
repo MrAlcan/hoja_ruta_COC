@@ -162,8 +162,8 @@ CREATE VIEW `documentos_procedencia`
 
 SELECT * FROM `documentos_procedencia`;
 
-
-SELECT MAX(id_flujo), id_procedimiento_flujo, id_area_procedencia, id_area_destino
+CREATE VIEW `flujos_procedimientos` AS
+SELECT MAX(id_flujo) AS id_flujo_prc, id_procedimiento_flujo, id_area_procedencia, id_area_destino, id_usuario_envia
 FROM flujo_procedimiento
 GROUP BY id_procedimiento_flujo DESC;
 
@@ -191,6 +191,10 @@ CREATE VIEW `documentos_procedencia`
     INNER JOIN `areas` ON flujo_procedimiento.id_area_procedencia = areas.id_area
     INNER JOIN `tipo_procedimiento` ON procedimiento.id_tipo_procedimiento_realizado = tipo_procedimiento.id_tipo_procedimiento
     INNER JOIN `usuarios` ON flujo_procedimiento.id_usuario_envia = usuarios.ci;
+
+CREATE VIEW `flujo_actual`
+    AS SELECT documentos_procedencia.id_flujo_prc, documentos_procedencia.codigo_hoja_ruta, documentos_procedencia.nombre_tipo_procedimiento, documentos_procedencia.solicitante, documentos_procedencia.nombre_area AS area_procedencia, documentos_procedencia.nombre_usuario,areas.nombre_area AS area_destino, documentos_procedencia.fecha_subido
+    FROM `documentos_procedencia` INNER JOIN `areas` ON documentos_procedencia.id_area_destino = areas.id_area;
 
 
 /*

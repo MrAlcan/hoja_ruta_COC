@@ -23,8 +23,15 @@
                         <?php
                             session_start();
                             $ses = $_SESSION['area'];
+							$rol = $_SESSION['rol'];
                             if($ses == 1){
                                 echo "<li><a href='nuevo.php'>Nuevo registro</a></li>";
+                            }
+							if($rol == 1){
+                                echo "<li><a href='flujoActual.php'>Flujo actual</a></li>";
+                            }else{
+                                echo "<li><a href='pendientes.php'>Pendientes</a></li>";
+                                echo "<li><a href='enviados.php'>Enviados</a></li>";
                             }
                             
                         
@@ -32,8 +39,7 @@
                         ?>
 
 						<li><a href="inicio.php">Inicio</a></li>
-						<li><a href="pendientes.php">Pendientes</a></li>
-						<li><a href="enviados.php">Enviados</a></li>
+						
 						<li><a href="desconectar.php"><font color="black">Salir</font></a></li>
 					</ul>
 				</div>

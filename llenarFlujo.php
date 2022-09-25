@@ -23,6 +23,8 @@ $db = mysqli_select_db($conexion, $basededatos) or die ("Error conexion al conec
     echo "<script>console.log('$n_reg')</script>";
     $sig_area = $_POST['sig_area'];
     echo "<script>console.log('$sig_area')</script>";
+    $observaciones = $_POST['obser'];
+
 
     //sentencia sql
 
@@ -38,7 +40,7 @@ $db = mysqli_select_db($conexion, $basededatos) or die ("Error conexion al conec
     }
     echo "<script>console.log('$n_proc')</script>";
 
-    $sql_2 = "INSERT INTO `flujo_procedimiento`(`id_procedimiento_flujo`,`id_area_procedencia`,`id_area_destino`,`id_usuario_envia`) VALUES ('$n_proc','$ses','$sig_area','$id_user')";
+    $sql_2 = "INSERT INTO `flujo_procedimiento`(`id_procedimiento_flujo`,`id_area_procedencia`,`id_area_destino`,`id_usuario_envia`,`observaciones`) VALUES ('$n_proc','$ses','$sig_area','$id_user','$observaciones')";
 
     $ejecutar_2=mysqli_query($conexion, $sql_2); 
 

@@ -20,6 +20,17 @@
 				</div>
 				<div class="col-xs-8 text-right menu-1">
 					<ul>
+					<?php
+                            session_start();
+                            $ses = $_SESSION['area'];
+                            $rol = $_SESSION['rol'];
+                            
+
+                            if($rol == 1){
+                                echo "<li><a href='flujoActual.php'>Flujo actual</a></li>";
+                            }
+
+                        ?>
 						<li><a href="nuevo.php">Nuevo registro</a></li>
 						<li><a href="inicio.php">Inicio</a></li>
 						<li><a href="pendientes.php">Pendientes</a></li>
