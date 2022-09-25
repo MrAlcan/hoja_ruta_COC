@@ -193,7 +193,7 @@ CREATE VIEW `documentos_procedencia`
     INNER JOIN `usuarios` ON flujo_procedimiento.id_usuario_envia = usuarios.ci;
 
 CREATE VIEW `flujo_actual`
-    AS SELECT documentos_procedencia.id_flujo_prc, documentos_procedencia.codigo_hoja_ruta, documentos_procedencia.nombre_tipo_procedimiento, documentos_procedencia.solicitante, documentos_procedencia.nombre_area AS area_procedencia, documentos_procedencia.nombre_usuario,areas.nombre_area AS area_destino, documentos_procedencia.fecha_subido
+    AS SELECT documentos_procedencia.id_flujo_prc, documentos_procedencia.codigo_hoja_ruta, documentos_procedencia.nombre_tipo_procedimiento, documentos_procedencia.solicitante, documentos_procedencia.nombre_area AS area_procedencia, documentos_procedencia.nombre_usuario,areas.nombre_area AS area_destino, documentos_procedencia.fecha_subido, documentos_procedencia.id_area_procedencia, documentos_procedencia.id_area_destino
     FROM `documentos_procedencia` INNER JOIN `areas` ON documentos_procedencia.id_area_destino = areas.id_area;
 
 

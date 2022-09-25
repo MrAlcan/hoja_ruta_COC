@@ -21,6 +21,7 @@
 				<div class="col-xs-8 text-right menu-1">
 					<ul>
                         <li><a href="inicio.php">Inicio</a></li>
+                        <li><a href='terminados.php'>Terminados</a></li>
                         <?php
                             session_start();
                             $ses = $_SESSION['area'];
@@ -82,8 +83,8 @@
 
                             require("conexion.php");
 
-							
-							$sql=("SELECT * FROM flujo_actual");
+							$destinoArea=100;
+							$sql=("SELECT * FROM flujo_actual WHERE id_area_destino!=$destinoArea");
 
 							$query=mysqli_query($mysqli,$sql);
 							

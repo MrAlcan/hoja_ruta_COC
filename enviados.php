@@ -34,6 +34,7 @@
                         
                         
                         ?>
+						<li><a href='terminados.php'>Terminados</a></li>
 						
 						<li><a href="inicio.php">Inicio</a></li>
 						<li><a href="pendientes.php">Pendientes</a></li>
@@ -79,8 +80,12 @@
 
                             require("conexion.php");
 
+							$destinoArea = 100;
+
 							
-							$sql=("SELECT * FROM documentos_destino WHERE id_area_procedencia=$ses");
+
+							
+							$sql=("SELECT * FROM documentos_destino WHERE id_area_procedencia=$ses AND id_area_destino!=$destinoArea");
 
 							$query=mysqli_query($mysqli,$sql);
 							
