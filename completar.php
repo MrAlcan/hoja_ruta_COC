@@ -51,9 +51,9 @@
         $area_proc_a = $_GET['area_p'];
         $tipo_procedimiento_a = $_GET['tipo_procedimiento'];
 		$fecha_a = $_GET['fecha'];
+		$n_flujo_a = $_GET['n_flujo'];
 
         require("conexion.php");
-		session_start();
 		$ses = $_SESSION['id'];
 		$areas = $_SESSION['area'];
 
@@ -214,7 +214,36 @@
 				
 												
 				
-			</form>	
+			</form>
+
+			<?php
+			
+				$sql4=("SELECT documento_subido.nombre_archivo, documento_subido.directorio FROM documento_subido WHERE documento_subido.id_flujo_subido = $n_flujo_a");
+
+				$nombre_archivo = '';
+				$directorio_archivo = '';
+				
+				$query4=mysqli_query($mysqli,$sql4);
+				while($arreglo4=mysqli_fetch_array($query4)){
+					$nombre_archivo = $arreglo4[0];
+					$directorio_archivo = $arreglo4[1];
+				}
+			
+			?>
+			<div class="row form-group">
+				<div class="col-md-12">
+					<?php
+						echo "<h4>$nombre_archivo</h4>";/*
+						echo "<button class='alert-success'><a href='descargar.php?nombreA=<?php echo $nombre_archivo;?>&directorioA=<?php echo $directorio_archivo?>'>Descargar</a></button>";*/
+						echo "<button class='alert-success'><a href='descargar.php?nombreA=$nombre_archivo&directorioA=$directorio_archivo'>Descargar</a></button>";
+
+					?>
+					
+					
+				</div>
+			</div>
+
+
 		</div>
 
 										

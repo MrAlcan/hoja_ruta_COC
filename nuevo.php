@@ -54,14 +54,14 @@
 				<div class="row form-group">
 					<div class="col-md-6">
 						<label for="n_registro">N° DE REGISTRO</label>
-						<input type="number" name="n_registro" id="n_registro" class="form-control" ">
+						<input type="number" name="n_registro" id="n_registro" class="form-control">
 					</div>
 				</div>
 
 				<div class="row form-group">
 					<div class="col-md-6">
 						<label for="solicitante">SOLICITANTE</label>
-						<input type="text" name="solicitante" id="solicitante" class="form-control" ">
+						<input type="text" name="solicitante" id="solicitante" class="form-control">
 					</div>
 				</div>
 

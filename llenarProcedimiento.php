@@ -101,7 +101,7 @@ $db = mysqli_select_db($conexion, $basededatos) or die ("Error conexion al conec
                 $nombreArea=$arreglo_5[1];
             }
 
-            $nombreArchivo = $n_reg .'_'.$nombreArea.'_'.$n_flujo_a;
+            $nombreArchivo = $n_reg .'_'.$nombreArea.'_'.$n_flujo_a.'.pdf';
             $fname = date("YmdHis").'_'.$nombreArchivo;
             $directorio = "archivospdf/".$fname;
 
