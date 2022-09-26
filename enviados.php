@@ -68,6 +68,7 @@
 							<th>Tipo de Solicitud</th>
 							<th>Solicitante</th>
 							<th>Area Enviada</th>
+							<th>Ver Documento</th>
 							<!--th>Fecha de Salida</th>
 							<th>Hora de Salida</th>
                             <th>Precio</th-->
@@ -93,6 +94,17 @@
                             
 
 							while($arreglo=mysqli_fetch_array($query)){
+
+								$sql4=("SELECT documento_subido.nombre_archivo, documento_subido.directorio FROM documento_subido WHERE documento_subido.id_flujo_subido = $arreglo[0]");
+
+								$nombre_archivo = '';
+								$directorio_archivo = '';
+								
+								$query4=mysqli_query($mysqli,$sql4);
+								while($arreglo4=mysqli_fetch_array($query4)){
+									$nombre_archivo = $arreglo4[0];
+									$directorio_archivo = $arreglo4[1];
+								}
 							
 
                                 echo "<tr>";
@@ -101,6 +113,8 @@
                                     echo "<td>$arreglo[2]</td>";
                                     echo "<td>$arreglo[3]</td>";
                                     echo "<td>$arreglo[4]</td>";
+									echo "<td><button class='btn btn-dark'><a href='verpdf.php?nombreA=$nombre_archivo&directorioA=$directorio_archivo' target='_blank'>Ver documento</a></button></td>";
+
                                     //echo "<td>$arreglo[3]</td>";
                                     //echo "<td>$arreglo[4]</td>";
                                 echo "</tr>";

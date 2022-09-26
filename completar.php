@@ -230,12 +230,26 @@
 				}
 			
 			?>
-			<div class="row form-group">
+			<!--div class="row form-group">
 				<div class="col-md-12">
 					<?php
 						echo "<h4>$nombre_archivo</h4>";/*
 						echo "<button class='alert-success'><a href='descargar.php?nombreA=<?php echo $nombre_archivo;?>&directorioA=<?php echo $directorio_archivo?>'>Descargar</a></button>";*/
 						echo "<button class='alert-success'><a href='descargar.php?nombreA=$nombre_archivo&directorioA=$directorio_archivo'>Descargar</a></button>";
+
+					?>
+					
+					
+				</div>
+			</div-->
+
+			<div class="row form-group">
+				<div class="col-md-12">
+					<h4>Ver online</h4>
+					<?php
+						echo "<h4>$nombre_archivo</h4>";/*
+						echo "<button class='alert-success'><a href='descargar.php?nombreA=<?php echo $nombre_archivo;?>&directorioA=<?php echo $directorio_archivo?>'>Descargar</a></button>";*/
+						echo "<button class='btn btn-dark'><a href='verpdf.php?nombreA=$nombre_archivo&directorioA=$directorio_archivo' target='_blank'>Ver documento</a></button>";
 
 					?>
 					
