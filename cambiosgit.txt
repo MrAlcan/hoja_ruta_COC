@@ -1,0 +1,2 @@
+Se debe agregar una carpeta llamada 'archivospdf' al principio de las carpetas.
+Se debe descargar los archivos css y js de bootstrap 5.0.2, y guardarlos en una carpeta llamada css y js
