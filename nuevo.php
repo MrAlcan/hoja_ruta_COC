@@ -119,22 +119,46 @@
 
 				<div class="row form-group">
 					<div class="col-md-6">
+						<?php
+
+							$sql2=("SELECT * FROM areas");
+							//$contadorAreas=0;
+
+							$query2=mysqli_query($mysqli,$sql2);
+							while($arreglo2=mysqli_fetch_array($query2)){
+								$check = 'check' . $arreglo2[1];
+								echo "<div class='form-check'>";
+								echo "<input class='form-check-input' type='checkbox' value='$arreglo2[0]' id='$check' name='$check'>";
+								echo "<label class='form-check-label' for='$check'>$arreglo2[1]</label>";
+								echo "</div>";
+
+							}
+
+							
+						?>
+
+					</div>
+				</div>
+
+
+				<!--div class="row form-group">
+					<div class="col-md-6">
 						<label for="sig_area">SIGUIENTE AREA</label>
 						<select name="sig_area" id="sig_area" class="form-control" required="">
-						<?php
+						<?php/*
 
 							$sql2=("SELECT * FROM areas");
 
 							$query2=mysqli_query($mysqli,$sql2);
 							while($arreglo2=mysqli_fetch_array($query2)){
 								echo "<option value='$arreglo2[0]'>$arreglo2[1]</option>";
-							}
+							}*/
 																
 						?>
 																
 						</select>
 					</div>
-				</div>
+				</div-->
 
 				<div class="row form-group">
 					<div class="col-md-6">
