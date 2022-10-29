@@ -95,7 +95,7 @@
                             require("conexion.php");
 
 							
-							$sql=("SELECT * FROM documentos_procedencia WHERE id_area_destino=$ses");
+							$sql=("SELECT * FROM procedencia_documentos WHERE id_area_destino=$ses");
 
 							$query=mysqli_query($mysqli,$sql);
 							

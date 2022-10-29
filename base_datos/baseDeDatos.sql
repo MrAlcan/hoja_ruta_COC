@@ -85,6 +85,7 @@ CREATE TABLE flujo_procedimiento(
     id_usuario_envia INT NOT NULL,
     observaciones TEXT,
     fecha_subido TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    estado_rev BIT DEFAULT 0,
     FOREIGN KEY (id_procedimiento_flujo) REFERENCES procedimiento(id_procedimiento),
     FOREIGN KEY (id_area_procedencia) REFERENCES areas(id_area),
     FOREIGN KEY (id_area_destino) REFERENCES areas(id_area),
@@ -127,6 +128,20 @@ ALTER TABLE documento_subido
 
 
 -- SELECT * FROM flujo_procedimiento WHERE id_area_procedencia!=2 AND id_area_destino=2;
+
+-- CREACION DE VISTA PARA VARIAS AREAS ENVIADAS
+
+CREATE VIEW `procedencia_documentos` AS
+SELECT flujo_procedimiento.id_flujo AS id_flujo_prc, procedimiento.codigo_hoja_ruta, tipo_procedimiento.nombre_tipo_procedimiento, procedimiento.solicitante, areas.nombre_area, usuarios.nombre_usuario, flujo_procedimiento.id_area_procedencia, flujo_procedimiento.id_area_destino, procedimiento.descripcion_solicitud, flujo_procedimiento.fecha_subido
+FROM flujo_procedimiento INNER JOIN procedimiento ON flujo_procedimiento.id_procedimiento_flujo = procedimiento.id_procedimiento
+INNER JOIN areas ON flujo_procedimiento.id_area_procedencia = areas.id_area
+INNER JOIN tipo_procedimiento ON procedimiento.id_tipo_procedimiento_realizado = tipo_procedimiento.id_tipo_procedimiento
+INNER JOIN usuarios ON flujo_procedimiento.id_usuario_envia = usuarios.ci
+WHERE flujo_procedimiento.estado_rev = 0;
+
+-- FIN CREACION DE PRUEBA
+
+
 
 CREATE VIEW `flujos_procedimientos` AS
 SELECT MAX(id_flujo) AS id_flujo_prc, id_procedimiento_flujo, id_area_procedencia, id_area_destino, id_usuario_envia

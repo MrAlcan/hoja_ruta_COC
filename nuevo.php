@@ -119,6 +119,7 @@
 
 				<div class="row form-group">
 					<div class="col-md-6">
+						<label for="areas">SIGUIENTEES AREAS</label>
 						<?php
 
 							$sql2=("SELECT * FROM areas");
