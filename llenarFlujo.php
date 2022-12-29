@@ -21,7 +21,7 @@ $db = mysqli_select_db($conexion, $basededatos) or die ("Error conexion al conec
 
     $n_reg = $_POST['n_registro'];
     echo "<script>console.log('$n_reg')</script>";
-    $n_flujo_aaa = $POST['n_flujo_aa'];
+    $n_flujo_aaa = $_POST['n_flujo_aa'];
    /* $sig_area = $_POST['sig_area'];
     echo "<script>console.log('$sig_area')</script>";*/
     $observaciones = $_POST['obser'];
