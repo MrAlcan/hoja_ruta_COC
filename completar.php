@@ -72,7 +72,7 @@
         $descripcion_a = $arreglo[4];
 
 
-		$sql3 = ("SELECT procedimiento.codigo_hoja_ruta, flujo_procedimiento.observaciones, areas.nombre_area FROM flujo_procedimiento INNER JOIN areas ON flujo_procedimiento.id_area_procedencia = areas.id_area INNER JOIN procedimiento ON procedimiento.id_procedimiento = flujo_procedimiento.id_procedimiento_flujo WHERE procedimiento.codigo_hoja_ruta = $n_registro_a");
+		$sql3 = ("SELECT procedimiento.codigo_hoja_ruta, flujo_procedimiento.observaciones, areas.nombre_area, flujo_procedimiento.id_flujo_padre FROM flujo_procedimiento INNER JOIN areas ON flujo_procedimiento.id_area_procedencia = areas.id_area INNER JOIN procedimiento ON procedimiento.id_procedimiento = flujo_procedimiento.id_procedimiento_flujo WHERE procedimiento.codigo_hoja_ruta = $n_registro_a");
 
 		$query3 = mysqli_query($mysqli,$sql3);
 
@@ -91,7 +91,7 @@
 					<div class="col-md-6">
 						<label for="n_flujo_aa"></label>
                         <?php
-							echo "<input type='number' name='n_flujo_aa' id='n_flujo_aa' class='form-control' value='$n_flujo_a' style='background-color:#FFFFFF; color:#FFFFFF; border-color:#FFFFFF' readonly>";
+							echo "<input type='number' name='n_flujo_aa' id='n_flujo_aa' class='form-control' value='$n_flujo_a' style='background-color:#FFFFFF; color:#FFFFFF; border-color:#FFFFFF' disabled>";
 						?>
 						
 					</div>
@@ -173,10 +173,47 @@
 						<?php
 
 							$observaciones_totales='';
-						
-							while($arreglo3=mysqli_fetch_array($query3)){
-								$observaciones_totales = $observaciones_totales . $arreglo3[2] . ' - ' . $arreglo3[1] . "\n";
+
+							/*
+								PRUEBA PARA MULTIPLES AREAS
+
+							*/
+
+							$n_flujo_padre = -1;
+							$n_flujo_hijo = $n_flujo_a;
+
+							$observaciones_areas = [];
+							$observaciones_observaciones = [];
+
+							$aux_cont = 0;
+
+							while($n_flujo_padre!=0){
+								$sql5 = "SELECT flujo_procedimiento.id_flujo, flujo_procedimiento.observaciones, areas.nombre_area, flujo_procedimiento.id_flujo_padre FROM flujo_procedimiento INNER JOIN areas ON flujo_procedimiento.id_area_procedencia = areas.id_area WHERE flujo_procedimiento.id_flujo = $n_flujo_hijo";
+
+								$query5 = mysqli_query($mysqli,$sql5);
+								while($arreglo5=mysqli_fetch_array($query5)){
+									$n_flujo_hijo = $arreglo5[3];
+									$n_flujo_padre = $arreglo5[3];
+									$observaciones_areas[$aux_cont] = $arreglo5[2];
+									$observaciones_observaciones[$aux_cont] = $arreglo5[1];
+								}
+								$aux_cont = $aux_cont + 1;
 							}
+							for ($i=$aux_cont-2; $i >=0 ; $i--) { 
+								$observaciones_totales = $observaciones_totales . $observaciones_areas[$i] . ' - ' . $observaciones_observaciones[$i] . "\n";
+							}
+							/*
+
+							$sql5 = "SELECT flujo_procedimiento.id_flujo, flujo_procedimiento.observaciones, areas.nombre_area, flujo_procedimiento.id_flujo_padre FROM flujo_procedimiento INNER JOIN areas ON flujo_procedimiento.id_area_procedencia = areas.id_area WHERE flujo_procedimiento.id_flujo = $n_flujo_hijo";
+
+							$query5 = mysqli_query($mysqli,$sql5);
+
+							$observaciones_totales = $observaciones_totales . $query5 . "\n";*/
+							// FIN PRUEBA
+						
+							/*while($arreglo3=mysqli_fetch_array($query3)){
+								$observaciones_totales = $observaciones_totales . $arreglo3[2] . ' - ' . $arreglo3[1] . "\n";
+							}*/
 
 							echo "<script>console.log('$observaciones_totales')</script>";
 

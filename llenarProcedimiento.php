@@ -93,8 +93,19 @@ $db = mysqli_select_db($conexion, $basededatos) or die ("Error conexion al conec
         }
         echo "<script>console.log('$n_proc')</script>";
 
+        $sql_8 = "INSERT INTO `flujo_procedimiento`(`id_procedimiento_flujo`,`id_area_procedencia`,`id_area_destino`,`id_usuario_envia`,`observaciones`,`estado_rev`) VALUES ('$n_proc','$ses','$ses','$id_user','nula',1)";
+        $ejecutar_8 = mysqli_query($conexion, $sql_8);
+
+        $sql_9 = "SELECT flujo_procedimiento.id_flujo FROM flujo_procedimiento WHERE flujo_procedimiento.id_procedimiento_flujo = $n_proc";
+        $ejecutar_9=mysqli_query($conexion, $sql_9);
+        $n_flujo_padre=0;
+
+        while($arreglo_9=mysqli_fetch_array($ejecutar_9)){
+            $n_flujo_padre=$arreglo_9[0];
+        }
+
         for ($posic=0; $posic < $aux; $posic++) {
-            $sql_2 = "INSERT INTO `flujo_procedimiento`(`id_procedimiento_flujo`,`id_area_procedencia`,`id_area_destino`,`id_usuario_envia`,`observaciones`) VALUES ('$n_proc','$ses','$sig_areas[$posic]','$id_user','$observacion')";//555
+            $sql_2 = "INSERT INTO `flujo_procedimiento`(`id_procedimiento_flujo`,`id_area_procedencia`,`id_area_destino`,`id_usuario_envia`,`observaciones`,`id_flujo_padre`) VALUES ('$n_proc','$ses','$sig_areas[$posic]','$id_user','$observacion','$n_flujo_padre')";//555
 
             $ejecutar_2=mysqli_query($conexion, $sql_2);
 

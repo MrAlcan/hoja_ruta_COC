@@ -60,7 +60,7 @@ $db = mysqli_select_db($conexion, $basededatos) or die ("Error conexion al conec
     
 
     for ($posic=0; $posic < $aux; $posic++) {
-        $sql_2 = "INSERT INTO `flujo_procedimiento`(`id_procedimiento_flujo`,`id_area_procedencia`,`id_area_destino`,`id_usuario_envia`,`observaciones`) VALUES ('$n_proc','$ses','$sig_areas[$posic]','$id_user','$observaciones')";
+        $sql_2 = "INSERT INTO `flujo_procedimiento`(`id_procedimiento_flujo`,`id_area_procedencia`,`id_area_destino`,`id_usuario_envia`,`observaciones`,`id_flujo_padre`) VALUES ('$n_proc','$ses','$sig_areas[$posic]','$id_user','$observaciones','$n_flujo_aaa')";
 
         $ejecutar_2=mysqli_query($conexion, $sql_2); 
 

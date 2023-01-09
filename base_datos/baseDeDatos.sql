@@ -86,7 +86,7 @@ CREATE TABLE flujo_procedimiento(
     observaciones TEXT,
     fecha_subido TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     estado_rev BIT DEFAULT 0,
-    id_flujo_padre INT,
+    id_flujo_padre INT DEFAULT 0,
     FOREIGN KEY (id_procedimiento_flujo) REFERENCES procedimiento(id_procedimiento),
     FOREIGN KEY (id_area_procedencia) REFERENCES areas(id_area),
     FOREIGN KEY (id_area_destino) REFERENCES areas(id_area),
