@@ -57,12 +57,13 @@
         $tipo_procedimiento_a = $_GET['tipo_procedimiento'];
 		$fecha_a = $_GET['fecha'];
 		$n_flujo_a = $_GET['n_flujo'];
+		$gestion = $_GET['gestion'];
 
         require("conexion.php");
 		$ses = $_SESSION['id'];
 		$areas = $_SESSION['area'];
 
-        $sql=("SELECT * FROM procedimiento WHERE codigo_hoja_ruta=$n_registro_a");
+        $sql=("SELECT * FROM procedimiento WHERE codigo_hoja_ruta=$n_registro_a AND gestion=$gestion");
 
 		$query=mysqli_query($mysqli,$sql);
 
@@ -85,13 +86,14 @@
 		<div class="tab-content-inner active m-5" data-content="signup">
 			<h3>Registra el nuevo registro</h3>
 
-			<form enctype="multipart/form-data"  action='llenarFlujo.php' name="form" method="POST">
+			<form enctype="multipart/form-data"  <?php echo "action='llenarFlujo.php?gestion=$gestion'";?> name="form" method="POST">
 
 				<div class="row form-group">
 					<div class="col-md-6">
-						<label for="n_flujo_aa"></label>
+						<!--label for="n_flujo_aa"></label-->
                         <?php
-							echo "<input type='number' name='n_flujo_aa' id='n_flujo_aa' class='form-control' value='$n_flujo_a' style='background-color:#FFFFFF; color:#FFFFFF; border-color:#FFFFFF' disabled>";
+							echo "<label for='n_flujo_aa'>H.R. $n_registro_a/$gestion</label>";
+							echo "<input type='number' name='n_flujo_aa' id='n_flujo_aa' class='form-control' value='$n_flujo_a' style='background-color:#FFFFFF; color:#FFFFFF; border-color:#FFFFFF' readonly>";
 						?>
 						
 					</div>
@@ -233,7 +235,7 @@
 
 				<div class="row form-group">
 					<div class="col-md-6">
-						<label for="areas">SIGUIENTEES AREAS</label>
+						<label for="areas">SIGUIENTES AREAS</label>
 						<?php
 
 							$sql2=("SELECT * FROM areas");

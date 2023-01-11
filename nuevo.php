@@ -26,6 +26,7 @@
 				<div class="col-xs-8 text-right menu-1">
 					<ul>
 					<?php
+							require("conexion.php");
                             session_start();
                             $ses = $_SESSION['area'];
                             $rol = $_SESSION['rol'];
@@ -55,11 +56,36 @@
 
 			<form enctype="multipart/form-data" action="llenarProcedimiento.php" name="form" method="POST" >
 
+				<div class="row form-group">
+					<div class="col-md-6">
+						<?php
+							$ultimo_id;
+							$ultimo_gestion;
+
+							$query_ul = "SELECT * FROM procedimiento ORDER BY id_procedimiento DESC LIMIT 0,1";
+							
+							$resp = mysqli_query($mysqli, $query_ul) or die("Error");
+							
+							while($row = mysqli_fetch_assoc($resp)){
+								$ultimo_id = $row["codigo_hoja_ruta"];
+								$ultimo_gestion = $row["gestion"];
+							}
+							$ultimo_id = $ultimo_id+1;
+							echo "<label for='n_registros'>H.R. $ultimo_id/$ultimo_gestion</label>";
+						?>
+						<!--input type="number" name="n_registro" id="n_registro" class="form-control"-->
+					</div>
+				</div>
+
 
 				<div class="row form-group">
 					<div class="col-md-6">
 						<label for="n_registro">N° DE REGISTRO</label>
-						<input type="number" name="n_registro" id="n_registro" class="form-control">
+						<?php
+							
+							echo "<input type='number' name='n_registro' id='n_registro' class='form-control' value='$ultimo_id' readonly>";
+						?>
+						<!--input type="number" name="n_registro" id="n_registro" class="form-control"-->
 					</div>
 				</div>
 
@@ -78,7 +104,7 @@
 						<select name="tip_prc" id="tip_proc" class="form-control" required="">
 						<?php
 
-							require("conexion.php");
+							
 							session_start();
 							$ses = $_SESSION['id'];
 							$areas = $_SESSION['area'];

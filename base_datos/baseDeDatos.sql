@@ -65,6 +65,7 @@ CREATE TABLE procedimiento(
     id_area_creada INT NOT NULL,
     id_tipo_procedimiento_realizado INT NOT NULL,
     fecha_subido TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    gestion INT NOT NULL DEFAULT 2022,
     FOREIGN KEY (id_area_creada) REFERENCES areas(id_area),
     FOREIGN KEY (id_tipo_procedimiento_realizado) REFERENCES tipo_procedimiento(id_tipo_procedimiento)
 );
@@ -75,7 +76,16 @@ ALTER TABLE procedimiento
 ALTER TABLE procedimiento
     MODIFY id_procedimiento INT NOT NULL AUTO_INCREMENT;
 
+
 -- ALTERNATIVA A FLUJO DE PROCEDIMIENTOS
+
+CREATE TABLE estados_flujos(
+    id_estados_flujos INT NOT NULL,
+    descripcion_estados_flujos VARCHAR(20)
+);
+
+ALTER TABLE estados_flujos
+    ADD PRIMARY KEY (id_estados_flujos);
 
 CREATE TABLE flujo_procedimiento(
     id_flujo INT NOT NULL,
@@ -85,12 +95,13 @@ CREATE TABLE flujo_procedimiento(
     id_usuario_envia INT NOT NULL,
     observaciones TEXT,
     fecha_subido TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    estado_rev BIT DEFAULT 0,
+    estado_rev INT NOT NULL DEFAULT 1,
     id_flujo_padre INT DEFAULT 0,
     FOREIGN KEY (id_procedimiento_flujo) REFERENCES procedimiento(id_procedimiento),
     FOREIGN KEY (id_area_procedencia) REFERENCES areas(id_area),
     FOREIGN KEY (id_area_destino) REFERENCES areas(id_area),
-    FOREIGN KEY (id_usuario_envia) REFERENCES usuarios(ci)
+    FOREIGN KEY (id_usuario_envia) REFERENCES usuarios(ci),
+    FOREIGN KEY (estado_rev) REFERENCES estados_flujos(id_estados_flujos)
    -- FOREIGN KEY (id_flujo_padre) REFERENCES flujo_procedimiento(id_flujo)
 );
 
@@ -134,12 +145,12 @@ ALTER TABLE documento_subido
 -- CREACION DE VISTA PARA VARIAS AREAS ENVIADAS
 
 CREATE VIEW `procedencia_documentos` AS
-SELECT flujo_procedimiento.id_flujo AS id_flujo_prc, procedimiento.codigo_hoja_ruta, tipo_procedimiento.nombre_tipo_procedimiento, procedimiento.solicitante, areas.nombre_area, usuarios.nombre_usuario, flujo_procedimiento.id_area_procedencia, flujo_procedimiento.id_area_destino, procedimiento.descripcion_solicitud, flujo_procedimiento.fecha_subido
+SELECT flujo_procedimiento.id_flujo AS id_flujo_prc, procedimiento.codigo_hoja_ruta, tipo_procedimiento.nombre_tipo_procedimiento, procedimiento.solicitante, areas.nombre_area, usuarios.nombre_usuario, flujo_procedimiento.id_area_procedencia, flujo_procedimiento.id_area_destino, procedimiento.descripcion_solicitud, flujo_procedimiento.fecha_subido, procedimiento.gestion
 FROM flujo_procedimiento INNER JOIN procedimiento ON flujo_procedimiento.id_procedimiento_flujo = procedimiento.id_procedimiento
 INNER JOIN areas ON flujo_procedimiento.id_area_procedencia = areas.id_area
 INNER JOIN tipo_procedimiento ON procedimiento.id_tipo_procedimiento_realizado = tipo_procedimiento.id_tipo_procedimiento
 INNER JOIN usuarios ON flujo_procedimiento.id_usuario_envia = usuarios.ci
-WHERE flujo_procedimiento.estado_rev = 0;
+WHERE flujo_procedimiento.estado_rev = 1;
 
 -- FIN CREACION DE PRUEBA
 

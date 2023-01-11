@@ -26,6 +26,8 @@ $db = mysqli_select_db($conexion, $basededatos) or die ("Error conexion al conec
     echo "<script>console.log('$sig_area')</script>";*/
     $observaciones = $_POST['obser'];
 
+    $gestion = $_GET['gestion'];
+
     $sql_7 = "SELECT * FROM areas";
     $ejecutar_7=mysqli_query($conexion, $sql_7);
     $sig_areas;
@@ -40,12 +42,12 @@ $db = mysqli_select_db($conexion, $basededatos) or die ("Error conexion al conec
     }
 
 
-    $sql_8 = "UPDATE `flujo_procedimiento` SET `estado_rev`=1 WHERE `id_flujo`=$n_flujo_aaa";
+    $sql_8 = "UPDATE `flujo_procedimiento` SET `estado_rev`=2 WHERE `id_flujo`=$n_flujo_aaa";
     $ejecutar_8 = mysqli_query($conexion, $sql_8);
 
     //sentencia sql
 
-    $sql_3=("SELECT * FROM procedimiento WHERE codigo_hoja_ruta=$n_reg");
+    $sql_3=("SELECT * FROM procedimiento WHERE codigo_hoja_ruta=$n_reg AND gestion=$gestion");
 
    
 
@@ -70,7 +72,7 @@ $db = mysqli_select_db($conexion, $basededatos) or die ("Error conexion al conec
             echo '<script>alert("huvo algun error registro de flujo de procedimiento")</script> ';
             // echo "<script>location.href='nuevo.php'</script>";	
         }else{
-            echo '<script>alert("Su registro de flujo de procedimiento se realizo correctamente ")</script> ';
+            echo "<script>alert('Su registro de flujo de procedimiento se realizo correctamente $gestion')</script> ";
 
             //PRUEBAS PARA SUBIR ARCHIVOS
             $nombreArchivo=$_FILES['archivo']['name'];

@@ -77,6 +77,7 @@
 						<thead>
 						<tr>
 							<th>N° hoja de ruta</th>
+							<th>Gestion</th>
 							<th>Tipo de Solicitud</th>
 							<th>Solicitante</th>
 							<th>Area de Procedencia</th>
@@ -114,11 +115,14 @@
 									$nombre_archivo = $arreglo4[0];
 									$directorio_archivo = $arreglo4[1];
 								}
+
+								$gestion = $arreglo["gestion"];
 							
 
                                 echo "<tr>";
                                     //echo "<td>$num</td>";
                                     echo "<td>$arreglo[1]</td>";
+									echo "<td>$gestion</td>";
                                     echo "<td>$arreglo[2]</td>";
                                     echo "<td>$arreglo[3]</td>";
 									echo "<td>$arreglo[4]</td>";
@@ -131,7 +135,7 @@
 								
 
 
-									echo "<td><a href='completar.php?n_flujo=$arreglo[0]&n_reg=$arreglo[1]&area_p=$arreglo[4]&tipo_procedimiento=$arreglo[2]&fecha=$arreglo[9]'><button class='btn btn-info'><font size='2'>Completar</font></button></a></td>";
+									echo "<td><a href='completar.php?n_flujo=$arreglo[0]&n_reg=$arreglo[1]&area_p=$arreglo[4]&tipo_procedimiento=$arreglo[2]&fecha=$arreglo[9]&gestion=$gestion'><button class='btn btn-info'><font size='2'>Completar</font></button></a></td>";
 
 									/*echo "<td><a href='completar.php?variable=<?php echo urlencode(`$arreglo[1]`);?>'><button class='btn btn-info'><font size='2'>Completar</font></button></a></td>";
 								*/

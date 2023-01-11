@@ -122,6 +122,22 @@
 		</div>
 
 		<?php
+
+			$ultimo_gestion = 0;
+
+			//function obtenerGestion(){
+				$ultimo_gestion = 0;
+
+				$query_ul = "SELECT * FROM procedimiento ORDER BY id_procedimiento DESC LIMIT 0,1";
+							
+				$resp = mysqli_query($mysqli, $query_ul) or die("Error");
+							
+				while($row = mysqli_fetch_assoc($resp)){
+					$ultimo_gestion = $row["gestion"];
+				}
+				$ultimo_gestion_1 = $ultimo_gestion+1;
+				//echo $ultimo_gestion;
+			//}
                             
             if($ses == 1){
 
@@ -131,9 +147,42 @@
 					<button class='btn btn-info'><font size='4'>Agregar Documento</font></button>
 				</a>
 			</center>";
+
+			echo "<button type='button' class='btn btn-success' data-bs-toggle='modal' data-bs-target='#staticBackdrop' onclick='obtenerGestion();'>
+			Terminar Gestion
+			</button>";
             }
                            
         ?>
+
+		<!--button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onclick="dd()">
+		Terminar Gestion
+		</button-->
+		
+
+		<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="staticBackdropLabel">¿Esta seguro de terminar la gestion?</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<?php
+						echo "<p>El cambio de gestion de $ultimo_gestion a $ultimo_gestion_1 sera irreversible</p>";
+					?>
+					
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+					<form action="cambiarGestion.php" method="POST">
+						<input type="submit" class="btn btn-primary btn-block" value="Cambiar Gestion">
+					</form>
+					<!--button type="button" class="btn btn-primary">Cambiar gestion</button-->
+				</div>
+				</div>
+			</div>
+		</div>
         
         
 

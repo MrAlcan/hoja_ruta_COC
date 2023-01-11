@@ -19,7 +19,21 @@ $db = mysqli_select_db($conexion, $basededatos) or die ("Error conexion al conec
     $id_user = $_SESSION['id'];
     echo "<script>console.log('$id_user')</script>";
 
-    $n_reg = $_POST['n_registro'];
+    $ultimo_id;
+    $gestion;
+
+	$query_ul = "SELECT * FROM procedimiento ORDER BY id_procedimiento DESC LIMIT 0,1";
+							
+	$resp = mysqli_query($conexion, $query_ul) or die("Error");
+							
+	while($row = mysqli_fetch_assoc($resp)){
+		$ultimo_id = $row["codigo_hoja_ruta"];
+        $gestion = $row["gestion"];
+	}
+	$ultimo_id = $ultimo_id+1;
+
+    //$n_reg = $_POST['n_registro'];
+    $n_reg = $ultimo_id;
     echo "<script>console.log('$n_reg')</script>";
     $solicitante = $_POST['solicitante'];
     echo "<script>console.log('$solicitante')</script>";
@@ -82,7 +96,7 @@ $db = mysqli_select_db($conexion, $basededatos) or die ("Error conexion al conec
     }else{
         echo '<script>alert("Su registro de procedimiento se realizo correctamente ")</script> ';
 
-        $sql_3=("SELECT * FROM procedimiento WHERE codigo_hoja_ruta=$n_reg");
+        $sql_3=("SELECT * FROM procedimiento WHERE codigo_hoja_ruta=$n_reg AND gestion=$gestion");
    
 
         $ejecutar_3=mysqli_query($conexion, $sql_3);
@@ -93,7 +107,7 @@ $db = mysqli_select_db($conexion, $basededatos) or die ("Error conexion al conec
         }
         echo "<script>console.log('$n_proc')</script>";
 
-        $sql_8 = "INSERT INTO `flujo_procedimiento`(`id_procedimiento_flujo`,`id_area_procedencia`,`id_area_destino`,`id_usuario_envia`,`observaciones`,`estado_rev`) VALUES ('$n_proc','$ses','$ses','$id_user','nula',1)";
+        $sql_8 = "INSERT INTO `flujo_procedimiento`(`id_procedimiento_flujo`,`id_area_procedencia`,`id_area_destino`,`id_usuario_envia`,`observaciones`,`estado_rev`) VALUES ('$n_proc','$ses','$ses','$id_user','nula',2)";
         $ejecutar_8 = mysqli_query($conexion, $sql_8);
 
         $sql_9 = "SELECT flujo_procedimiento.id_flujo FROM flujo_procedimiento WHERE flujo_procedimiento.id_procedimiento_flujo = $n_proc";
