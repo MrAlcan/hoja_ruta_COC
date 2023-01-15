@@ -110,13 +110,76 @@ $db = mysqli_select_db($conexion, $basededatos) or die ("Error conexion al conec
         $sql_8 = "INSERT INTO `flujo_procedimiento`(`id_procedimiento_flujo`,`id_area_procedencia`,`id_area_destino`,`id_usuario_envia`,`observaciones`,`estado_rev`) VALUES ('$n_proc','$ses','$ses','$id_user','nula',2)";
         $ejecutar_8 = mysqli_query($conexion, $sql_8);
 
-        $sql_9 = "SELECT flujo_procedimiento.id_flujo FROM flujo_procedimiento WHERE flujo_procedimiento.id_procedimiento_flujo = $n_proc";
+        $sql_9 = "SELECT flujo_procedimiento.id_flujo, flujo_procedimiento.fecha_subido FROM flujo_procedimiento WHERE flujo_procedimiento.id_procedimiento_flujo = $n_proc";
         $ejecutar_9=mysqli_query($conexion, $sql_9);
         $n_flujo_padre=0;
+        $fecha_subido;
 
         while($arreglo_9=mysqli_fetch_array($ejecutar_9)){
             $n_flujo_padre=$arreglo_9[0];
+            $fecha_subido=$arreglo_9[1];
         }
+
+
+/*
+        $sql_4=("SELECT * FROM flujo_procedimiento WHERE id_procedimiento_flujo=$n_proc AND id_area_procedencia=$ses AND id_area_destino=$sig_areas[$posic]");//555
+        $ejecutar_4=mysqli_query($conexion, $sql_4);
+        $n_flujo_a=0;
+        $fecha_subido;
+
+        while($arreglo_4=mysqli_fetch_array($ejecutar_4)){
+            $n_flujo_a=$arreglo_4[0];
+            $fecha_subido=$arreglo_4[6];
+        }*/
+
+        $sql_5=("SELECT * FROM areas WHERE id_area=$ses");
+        $ejecutar_5=mysqli_query($conexion, $sql_5);
+
+        $nombreArea="";
+        while($arreglo_5=mysqli_fetch_array($ejecutar_5)){
+            $nombreArea=$arreglo_5[1];
+        }
+
+        $nombreArchivo = $n_reg .'_'.$nombreArea.'_'.$n_flujo_padre.'.pdf';
+        $fname = date("YmdHis").'_'.$nombreArchivo;
+        $directorio = "archivospdf/".$fname;
+
+        $move =  move_uploaded_file($tempArchivo,"archivospdf/".$fname);
+        if($move){
+
+            $sql_6 = "INSERT INTO `documento_subido`(`nombre_archivo`,`directorio`,`fecha_subido`,`id_usuario_subido`,`id_procedimiento_subido`,`id_flujo_subido`) VALUES ('$nombreArchivo','$directorio','$fecha_subido','$id_user','$n_proc','$n_flujo_padre')";
+
+            $ejecutar_6=mysqli_query($conexion, $sql_6);
+
+            if(!$ejecutar_6){
+                echo '<script>alert("huvo algun error registro de documento subido")</script> ';
+                // echo "<script>location.href='nuevo.php'</script>";	
+            }else{
+                //echo '<script>alert("Su registro de documento subido se realizo correctamente ")</script> ';
+                
+            }
+
+                    
+        }
+
+        for ($posic=0; $posic < $aux; $posic++) {
+            $sql_2 = "INSERT INTO `flujo_procedimiento`(`id_procedimiento_flujo`,`id_area_procedencia`,`id_area_destino`,`id_usuario_envia`,`observaciones`,`id_flujo_padre`) VALUES ('$n_proc','$ses','$sig_areas[$posic]','$id_user','$observacion','$n_flujo_padre')";//555
+    
+            $ejecutar_2=mysqli_query($conexion, $sql_2);
+    
+            if(!$ejecutar_2){
+                echo '<script>alert("huvo algun error registro de flujo de procedimiento")</script> ';
+                // echo "<script>location.href='nuevo.php'</script>";	
+            }else{
+                echo '<script>alert("Su registro de flujo de procedimiento se realizo correctamente ")</script> ';
+                echo "<script>location.href='inicio.php'</script>";	
+                    //echo "<script>location.href='inicio.php'</script>";	
+            }
+            
+        }
+
+
+/*
 
         for ($posic=0; $posic < $aux; $posic++) {
             $sql_2 = "INSERT INTO `flujo_procedimiento`(`id_procedimiento_flujo`,`id_area_procedencia`,`id_area_destino`,`id_usuario_envia`,`observaciones`,`id_flujo_padre`) VALUES ('$n_proc','$ses','$sig_areas[$posic]','$id_user','$observacion','$n_flujo_padre')";//555
@@ -127,8 +190,9 @@ $db = mysqli_select_db($conexion, $basededatos) or die ("Error conexion al conec
                 echo '<script>alert("huvo algun error registro de flujo de procedimiento")</script> ';
                 // echo "<script>location.href='nuevo.php'</script>";	
             }else{
-                echo '<script>alert("Su registro de flujo de procedimiento se realizo correctamente ")</script> ';
+                echo '<script>alert("Su registro de flujo de procedimiento se realizo correctamente ")</script> ';*/
                 //----------------------
+                /*
                 $sql_4=("SELECT * FROM flujo_procedimiento WHERE id_procedimiento_flujo=$n_proc AND id_area_procedencia=$ses AND id_area_destino=$sig_areas[$posic]");//555
                 $ejecutar_4=mysqli_query($conexion, $sql_4);
                 $n_flujo_a=0;
@@ -168,16 +232,16 @@ $db = mysqli_select_db($conexion, $basededatos) or die ("Error conexion al conec
 
                     
                 }
-                
+                */
 
 
 
                 //------------------------
                 
                 //echo "<script>location.href='inicio.php'</script>";	
-            }
+            /*}
             
-        }
+        }*/
 
         /*$sql_2 = "INSERT INTO `flujo_procedimiento`(`id_procedimiento_flujo`,`id_area_procedencia`,`id_area_destino`,`id_usuario_envia`,`observaciones`) VALUES ('$n_proc','$ses','$sig_area','$id_user','$observacion')";//555
 

@@ -145,7 +145,7 @@ ALTER TABLE documento_subido
 -- CREACION DE VISTA PARA VARIAS AREAS ENVIADAS
 
 CREATE VIEW `procedencia_documentos` AS
-SELECT flujo_procedimiento.id_flujo AS id_flujo_prc, procedimiento.codigo_hoja_ruta, tipo_procedimiento.nombre_tipo_procedimiento, procedimiento.solicitante, areas.nombre_area, usuarios.nombre_usuario, flujo_procedimiento.id_area_procedencia, flujo_procedimiento.id_area_destino, procedimiento.descripcion_solicitud, flujo_procedimiento.fecha_subido, procedimiento.gestion
+SELECT flujo_procedimiento.id_flujo AS id_flujo_prc, procedimiento.codigo_hoja_ruta, tipo_procedimiento.nombre_tipo_procedimiento, procedimiento.solicitante, areas.nombre_area, usuarios.nombre_usuario, flujo_procedimiento.id_area_procedencia, flujo_procedimiento.id_area_destino, procedimiento.descripcion_solicitud, flujo_procedimiento.fecha_subido, procedimiento.gestion, flujo_procedimiento.id_flujo_padre
 FROM flujo_procedimiento INNER JOIN procedimiento ON flujo_procedimiento.id_procedimiento_flujo = procedimiento.id_procedimiento
 INNER JOIN areas ON flujo_procedimiento.id_area_procedencia = areas.id_area
 INNER JOIN tipo_procedimiento ON procedimiento.id_tipo_procedimiento_realizado = tipo_procedimiento.id_tipo_procedimiento

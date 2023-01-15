@@ -195,8 +195,14 @@
 				</div>
 
 				<div class="row form-group">
-					<div class="col-md-12">
-						<input type="submit" class="btn btn-primary btn-block" value="Agregar">
+					<div class="col-md-4">
+						<input type="submit" class="btn btn-primary btn-block" value="Guardar y Enviar">
+					</div>
+					<div class="col-md-4">
+						<input type="submit" class="btn btn-primary btn-block" value="Completar">
+					</div>
+					<div class="col-md-4">
+						<input type="submit" class="btn btn-primary btn-block" value="Cerrar">
 					</div>
 				</div>
 				

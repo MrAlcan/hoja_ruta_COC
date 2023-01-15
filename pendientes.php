@@ -105,7 +105,9 @@
 
 							while($arreglo=mysqli_fetch_array($query)){
 
-								$sql4=("SELECT documento_subido.nombre_archivo, documento_subido.directorio FROM documento_subido WHERE documento_subido.id_flujo_subido = $arreglo[0]");
+								$id_padre = $arreglo['id_flujo_padre'];
+
+								$sql4=("SELECT documento_subido.nombre_archivo, documento_subido.directorio FROM documento_subido WHERE documento_subido.id_flujo_subido = $id_padre");
 
 								$nombre_archivo = '';
 								$directorio_archivo = '';
@@ -135,7 +137,7 @@
 								
 
 
-									echo "<td><a href='completar.php?n_flujo=$arreglo[0]&n_reg=$arreglo[1]&area_p=$arreglo[4]&tipo_procedimiento=$arreglo[2]&fecha=$arreglo[9]&gestion=$gestion'><button class='btn btn-info'><font size='2'>Completar</font></button></a></td>";
+									echo "<td><a href='completar.php?n_flujo=$arreglo[0]&n_reg=$arreglo[1]&area_p=$arreglo[4]&tipo_procedimiento=$arreglo[2]&fecha=$arreglo[9]&gestion=$gestion&id_f_padre=$id_padre'><button class='btn btn-info'><font size='2'>Completar</font></button></a></td>";
 
 									/*echo "<td><a href='completar.php?variable=<?php echo urlencode(`$arreglo[1]`);?>'><button class='btn btn-info'><font size='2'>Completar</font></button></a></td>";
 								*/
