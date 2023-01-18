@@ -72,6 +72,7 @@
 
         $solicitante_a = $arreglo[3];
         $descripcion_a = $arreglo[4];
+		$n_proc = $arreglo['id_procedimiento'];
 
 
 		$sql3 = ("SELECT procedimiento.codigo_hoja_ruta, flujo_procedimiento.observaciones, areas.nombre_area, flujo_procedimiento.id_flujo_padre FROM flujo_procedimiento INNER JOIN areas ON flujo_procedimiento.id_area_procedencia = areas.id_area INNER JOIN procedimiento ON procedimiento.id_procedimiento = flujo_procedimiento.id_procedimiento_flujo WHERE procedimiento.codigo_hoja_ruta = $n_registro_a");
@@ -86,7 +87,7 @@
     <div class="row m-5">
 		<div class="col">
 			<div class="tab-content-inner active" data-content="signup">
-				<h3>Registra el nuevo registro</h3>
+				<h3>Completa la hoja de ruta</h3>
 
 				<form enctype="multipart/form-data"  <?php echo "action='llenarFlujo.php?gestion=$gestion&id_flujo_padre=$id_flujo_padre'";?> name="form" method="POST">
 
@@ -351,6 +352,269 @@
 
 		<div class="col">
 			<h3>Otros registros de la hoja de ruta</h3>
+			<?php
+				$sql_6 = "SELECT flujo_procedimiento.id_flujo, areas.nombre_area, estados_flujos.descripcion_estados_flujos, flujo_procedimiento.id_flujo_padre, flujo_procedimiento.fecha_subido FROM flujo_procedimiento INNER JOIN areas ON flujo_procedimiento.id_area_destino=areas.id_area INNER JOIN estados_flujos ON flujo_procedimiento.estado_rev=estados_flujos.id_estados_flujos WHERE flujo_procedimiento.estado_rev=1 AND flujo_procedimiento.id_procedimiento_flujo=$n_proc AND flujo_procedimiento.id_flujo!=$n_flujo_a";
+				$query_6 = mysqli_query($mysqli,$sql_6);
+
+				$sql_8 = "SELECT flujo_procedimiento.id_flujo, areas.nombre_area, estados_flujos.descripcion_estados_flujos, flujo_procedimiento.id_flujo_padre, flujo_procedimiento.fecha_subido FROM flujo_procedimiento INNER JOIN areas ON flujo_procedimiento.id_area_procedencia=areas.id_area INNER JOIN estados_flujos ON flujo_procedimiento.estado_rev=estados_flujos.id_estados_flujos WHERE flujo_procedimiento.estado_rev=3 AND flujo_procedimiento.id_area_destino=100 AND flujo_procedimiento.id_procedimiento_flujo=$n_proc AND flujo_procedimiento.id_flujo!=$n_flujo_a";
+				$query_8 = mysqli_query($mysqli,$sql_8);
+
+			?>
+			<div class="table-responsive">          
+				<table class="table">
+					<thead>
+						<tr>
+							<th>N° de flujo</th>
+							<th>Area Actual</th>
+							<th>Estado</th>
+							<th>Ver Progreso</th>
+
+							<!--th>Fecha de Salida</th-->
+						</tr>
+					</thead>
+
+					<tbody>
+
+                        <?php     
+
+							$aux_modal_pendientes = 0;
+							$aux_modal_completados = 0;
+
+							while($arreglo_6=mysqli_fetch_array($query_6)){
+
+								$aux_modal_pendientes = $aux_modal_pendientes+1;
+
+								$id_padre = $arreglo_6['id_flujo_padre'];
+								$fecha_enviada =$arreglo_6['fecha_subido'];
+
+								$sql_7=("SELECT documento_subido.nombre_archivo, documento_subido.directorio FROM documento_subido WHERE documento_subido.id_flujo_subido = $id_padre");
+
+								$nombre_archivo = '';
+								$directorio_archivo = '';
+								
+								$query_7=mysqli_query($mysqli,$sql_7);
+								while($arreglo_7=mysqli_fetch_array($query_7)){
+									$nombre_archivo = $arreglo_7[0];
+									$directorio_archivo = $arreglo_7[1];
+								}
+
+								$observaciones_totales_2='';
+
+								/*
+									PRUEBA PARA MULTIPLES AREAS
+
+								*/
+
+								$n_flujo_padre_2 = -1;
+								$n_flujo_hijo_2 = $arreglo_6[0];
+
+								$observaciones_areas_2 = [];
+								$observaciones_observaciones_2 = [];
+
+								$aux_cont_2 = 0;
+
+								while($n_flujo_padre_2!=0){
+									$sql5_2 = "SELECT flujo_procedimiento.id_flujo, flujo_procedimiento.observaciones, areas.nombre_area, flujo_procedimiento.id_flujo_padre FROM flujo_procedimiento INNER JOIN areas ON flujo_procedimiento.id_area_procedencia = areas.id_area WHERE flujo_procedimiento.id_flujo = $n_flujo_hijo_2";
+
+									$query5_2 = mysqli_query($mysqli,$sql5_2);
+									while($arreglo5_2=mysqli_fetch_array($query5_2)){
+										$n_flujo_hijo_2 = $arreglo5_2[3];
+										$n_flujo_padre_2 = $arreglo5_2[3];
+										$observaciones_areas_2[$aux_cont_2] = $arreglo5_2[2];
+										$observaciones_observaciones_2[$aux_cont_2] = $arreglo5_2[1];
+									}
+									$aux_cont_2 = $aux_cont_2 + 1;
+								}
+								for ($i=$aux_cont_2-2; $i >=0 ; $i--) { 
+									$observaciones_totales_2 = $observaciones_totales_2 . $observaciones_areas_2[$i] . ' - ' . $observaciones_observaciones_2[$i] . "\n";
+								}
+
+								//$gestion = $arreglo["gestion"];
+							
+
+                                echo "<tr>";
+                                    //echo "<td>$num</td>";
+                                    echo "<td>$arreglo_6[0]</td>";
+                                    echo "<td>$arreglo_6[1]</td>";
+                                    echo "<td>$arreglo_6[2]</td>";
+									//echo "<td><button class='btn btn-dark'><a href='verpdf.php?nombreA=$nombre_archivo&directorioA=$directorio_archivo' target='_blank'>Ver documento</a></button></td>";
+
+
+
+						
+								
+
+
+									//echo "<td><a href='completar.php?n_flujo=$arreglo_6[0]&n_reg=$n_registro_a&gestion=$gestion&id_f_padre=$id_padre'><button class='btn btn-info'><font size='2'>Completar</font></button></a></td>";
+
+									/*echo "<td><a href='completar.php?variable=<?php echo urlencode(`$arreglo[1]`);?>'><button class='btn btn-info'><font size='2'>Completar</font></button></a></td>";
+								*/
+
+
+								$nombre_modal_pendientes = 'exampleModal' . $aux_modal_pendientes;
+								$referencia_pendientes = '#' . $nombre_modal_pendientes;
+								echo "<td><button type='button' class='btn btn-primary' data-bs-toggle='modal' data-bs-target=$referencia_pendientes>
+								Ver Progreso
+							  </button></td>";
+									
+                                    
+                                echo `</tr>`;
+                                //$num = $num + 1;
+								
+								echo "<div class='modal fade' id=$nombre_modal_pendientes tabindex='-1' aria-labelledby='exampleModalLabel' aria-hidden='true'>
+								<div class='modal-dialog modal-dialog-scrollable'>
+								  <div class='modal-content'>
+									<div class='modal-header'>
+									  <h3 class='modal-title'>Progreso hasta el area de $arreglo_6[1]</h3>
+									  <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+									</div>
+									<div class='modal-body'>
+										<h4>Hoja de ruta $n_registro_a/$gestion</h4>
+										<h5>Solicitante</h5>
+										<input type='text' class='form-control' value='$solicitante_a' disabled>
+										<h5>Tipo de Solicitud</h5>
+										<input type='text' class='form-control' value='$tipo_procedimiento_a' disabled>
+										<h5>Fecha Recibida</h5>
+										<input type='text' class='form-control' value='$fecha_enviada' disabled>
+										<h5>Descripcion de la solicitud</h5>
+										<input type='text' class='form-control' value='$descripcion_a' disabled>
+										<h5>Observaciones</h5>
+										<textarea type='text' class='form-control' value='$observaciones_totales_2' disabled>$observaciones_totales_2</textarea>
+										<h5>Ver documento</h5>
+										<button class='btn btn-dark'><a href='verpdf.php?nombreA=$nombre_archivo&directorioA=$directorio_archivo' target='_blank'>Ver documento</a></button>
+									  
+									</div>
+									<div class='modal-footer'>
+									  <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Cerrar</button>
+									  <!--button type='button' class='btn btn-primary'>Save changes</button-->
+									</div>
+								  </div>
+								</div>
+							  </div>";
+							}
+							while($arreglo_8=mysqli_fetch_array($query_8)){
+
+								$aux_modal_completados = $aux_modal_completados+1;
+
+								$id_padre = $arreglo_8['id_flujo_padre'];
+								$fecha_enviada =$arreglo_8['fecha_subido'];
+
+								$sql_7=("SELECT documento_subido.nombre_archivo, documento_subido.directorio FROM documento_subido WHERE documento_subido.id_flujo_subido = $id_padre");
+
+								$nombre_archivo = '';
+								$directorio_archivo = '';
+								
+								$query_7=mysqli_query($mysqli,$sql_7);
+								while($arreglo_7=mysqli_fetch_array($query_7)){
+									$nombre_archivo = $arreglo_7[0];
+									$directorio_archivo = $arreglo_7[1];
+								}
+
+								$observaciones_totales_2='';
+
+								/*
+									PRUEBA PARA MULTIPLES AREAS
+
+								*/
+
+								$n_flujo_padre_2 = -1;
+								$n_flujo_hijo_2 = $arreglo_8[0];
+
+								$observaciones_areas_2 = [];
+								$observaciones_observaciones_2 = [];
+
+								$aux_cont_2 = 0;
+
+								while($n_flujo_padre_2!=0){
+									$sql5_2 = "SELECT flujo_procedimiento.id_flujo, flujo_procedimiento.observaciones, areas.nombre_area, flujo_procedimiento.id_flujo_padre FROM flujo_procedimiento INNER JOIN areas ON flujo_procedimiento.id_area_procedencia = areas.id_area WHERE flujo_procedimiento.id_flujo = $n_flujo_hijo_2";
+
+									$query5_2 = mysqli_query($mysqli,$sql5_2);
+									while($arreglo5_2=mysqli_fetch_array($query5_2)){
+										$n_flujo_hijo_2 = $arreglo5_2[3];
+										$n_flujo_padre_2 = $arreglo5_2[3];
+										$observaciones_areas_2[$aux_cont_2] = $arreglo5_2[2];
+										$observaciones_observaciones_2[$aux_cont_2] = $arreglo5_2[1];
+									}
+									$aux_cont_2 = $aux_cont_2 + 1;
+								}
+								for ($i=$aux_cont_2-2; $i >=0 ; $i--) { 
+									$observaciones_totales_2 = $observaciones_totales_2 . $observaciones_areas_2[$i] . ' - ' . $observaciones_observaciones_2[$i] . "\n";
+								}
+
+								//$gestion = $arreglo["gestion"];
+							
+
+                                echo "<tr>";
+                                    //echo "<td>$num</td>";
+                                    echo "<td>$arreglo_8[0]</td>";
+                                    echo "<td>$arreglo_8[1]</td>";
+                                    echo "<td>$arreglo_8[2]</td>";
+									//echo "<td><button class='btn btn-dark'><a href='verpdf.php?nombreA=$nombre_archivo&directorioA=$directorio_archivo' target='_blank'>Ver documento</a></button></td>";
+
+
+
+						
+								
+
+
+									//echo "<td><a href='completar.php?n_flujo=$arreglo_6[0]&n_reg=$n_registro_a&gestion=$gestion&id_f_padre=$id_padre'><button class='btn btn-info'><font size='2'>Completar</font></button></a></td>";
+
+									/*echo "<td><a href='completar.php?variable=<?php echo urlencode(`$arreglo[1]`);?>'><button class='btn btn-info'><font size='2'>Completar</font></button></a></td>";
+								*/
+
+								$nombre_modal_completados = 'exampleModal_completados' . $aux_modal_completados;
+								$referencia_completados = '#' . $nombre_modal_completados;
+								echo "<td><button type='button' class='btn btn-primary' data-bs-toggle='modal' data-bs-target=$referencia_completados>
+								Ver Progreso
+							  </button></td>";
+									
+                                    
+                                echo `</tr>`;
+                                //$num = $num + 1;
+
+
+								
+								echo "<div class='modal fade' id=$nombre_modal_completados tabindex='-1' aria-labelledby='exampleModalLabel' aria-hidden='true'>
+								<div class='modal-dialog modal-dialog-scrollable'>
+								  <div class='modal-content'>
+									<div class='modal-header'>
+									  <h3 class='modal-title'>Progreso completado en el area de $arreglo_8[1]</h3>
+									  <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+									</div>
+									<div class='modal-body'>
+										<h4>Hoja de ruta $n_registro_a/$gestion</h4>
+										<h5>Solicitante</h5>
+										<input type='text' class='form-control' value='$solicitante_a' disabled>
+										<h5>Tipo de Solicitud</h5>
+										<input type='text' class='form-control' value='$tipo_procedimiento_a' disabled>
+										<h5>Fecha Completada</h5>
+										<input type='text' class='form-control' value='$fecha_enviada' disabled>
+										<h5>Descripcion de la solicitud</h5>
+										<input type='text' class='form-control' value='$descripcion_a' disabled>
+										<h5>Observaciones</h5>
+										<textarea type='text' class='form-control' value='$observaciones_totales_2' disabled>$observaciones_totales_2</textarea>
+										<h5>Ver documento</h5>
+										<button class='btn btn-dark'><a href='verpdf.php?nombreA=$nombre_archivo&directorioA=$directorio_archivo' target='_blank'>Ver documento</a></button>
+									  
+									</div>
+									<div class='modal-footer'>
+									  <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Cerrar</button>
+									  <!--button type='button' class='btn btn-primary'>Save changes</button-->
+									</div>
+								  </div>
+								</div>
+							  </div>";
+							}
+							
+															
+						?>
+
+
+
+						
+					</tbody>
+				</table>
+			</div>
 
 			
 
