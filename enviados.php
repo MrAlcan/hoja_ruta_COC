@@ -39,6 +39,7 @@
                         
                         
                         ?>
+						<li><a href='completados.php'>Completados</a></li>
 						<li><a href='terminados.php'>Terminados</a></li>
 						
 						<li><a href="inicio.php">Inicio</a></li>
@@ -91,7 +92,7 @@
 							
 
 							
-							$sql=("SELECT * FROM documentos_destino WHERE id_area_procedencia=$ses AND id_area_destino!=$destinoArea");
+							$sql=("SELECT * FROM documentos_destino WHERE id_area_procedencia=$ses AND id_area_destino!=$destinoArea AND id_area_destino!=$ses");
 
 							$query=mysqli_query($mysqli,$sql);
 							

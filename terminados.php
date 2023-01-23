@@ -26,6 +26,7 @@
 				<div class="col-xs-8 text-right menu-1">
 					<ul>
                         <li><a href="inicio.php">Inicio</a></li>
+                        <li><a href='completados.php'>Completados</a></li>
                         <li><a href='terminados.php'>Terminados</a></li>
                         <?php
                             session_start();
@@ -94,13 +95,23 @@
                             $variableTerminado=100;
                             
 
-                            if($rol == 1){
+                            /*if($rol == 1){
                                 //consulta para todos los flujos terminados
                                 $sql=("SELECT * FROM flujo_actual WHERE id_area_destino = '$variableTerminado'");
                             }else{
                                 //consulta para todos los demas terminados
                                 $sql=("SELECT * FROM flujo_actual WHERE id_area_destino = '$variableTerminado' AND id_area_procedencia='$ses'");
+                            }*/
+
+
+                            if($rol == 1){
+                                //consulta para todos los flujos terminados
+                                $sql=("SELECT * FROM documentos_terminados WHERE id_area_destino = '$variableTerminado'");
+                            }else{
+                                //consulta para todos los demas terminados
+                                $sql=("SELECT * FROM documentos_terminados WHERE id_area_destino = '$variableTerminado' AND id_area_procedencia='$ses'");
                             }
+
 
 							
 							//$sql=("SELECT * FROM flujo_actual");
@@ -112,7 +123,7 @@
 
 							while($arreglo=mysqli_fetch_array($query)){
 
-                                $sql4=("SELECT documento_subido.nombre_archivo, documento_subido.directorio FROM documento_subido WHERE documento_subido.id_flujo_subido = $arreglo[0]");
+                                $sql4=("SELECT documento_subido.nombre_archivo, documento_subido.directorio FROM documento_subido WHERE documento_subido.id_flujo_subido = $arreglo[10]");
 
 								$nombre_archivo = '';
 								$directorio_archivo = '';
@@ -132,7 +143,7 @@
                                     echo "<td>$arreglo[4]</td>";
                                     echo "<td>$arreglo[5]</td>";
                                     //echo "<td>$arreglo[6]</td>";
-                                    echo "<td>$arreglo[7]</td>";
+                                    echo "<td>$arreglo[9]</td>";
                                     echo "<td><button class='btn btn-dark'><a href='verpdf.php?nombreA=$nombre_archivo&directorioA=$directorio_archivo' target='_blank'>Ver documento</a></button></td>";
 
                                 echo "</tr>";

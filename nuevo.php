@@ -38,6 +38,7 @@
 
                         ?>
 						<li><a href="nuevo.php">Nuevo registro</a></li>
+						<li><a href='completados.php'>Completados</a></li>
 						<li><a href='terminados.php'>Terminados</a></li>
 						<li><a href="inicio.php">Inicio</a></li>
 						<li><a href="pendientes.php">Pendientes</a></li>

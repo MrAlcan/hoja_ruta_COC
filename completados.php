@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 
-	<!--link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet/css" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"-->
+    <!--link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet/css" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"-->
     <link rel="stylesheet" href="css/bootstrap.min.css">
 
     <script src="js/jquery-3.6.0.min.js"></script>
@@ -26,21 +26,22 @@
 				<div class="col-xs-8 text-right menu-1">
 					<ul>
                         <li><a href="inicio.php">Inicio</a></li>
-                        <li><a href='completados.php'>Completados</a></li>
                         <li><a href='terminados.php'>Terminados</a></li>
+                        <li><a href='completados.php'>Completados</a></li>
                         <?php
                             session_start();
                             $ses = $_SESSION['area'];
                             $rol = $_SESSION['rol'];
-                            
+
                             if($ses == 1){
                                 echo "<li><a href='nuevo.php'>Nuevo registro</a></li>";
+								echo "<li><a href='flujoActual.php'>Flujo actual</a></li>";
+                            }
+							if($rol == 1 && $ses==100){
+                                echo "<li><a href='flujoActual.php'>Flujo actual</a></li>";
+                            }else{
                                 echo "<li><a href='pendientes.php'>Pendientes</a></li>";
                                 echo "<li><a href='enviados.php'>Enviados</a></li>";
-                            }
-
-                            if($rol == 1){
-                                echo "<li><a href='flujoActual.php'>Flujo actual</a></li>";
                             }
 
                         ?>
@@ -58,13 +59,13 @@
 			<div class="row">
 				<div class="col-md-8 col-md-offset-2 text-center gtco-heading">
 					<h2>COOPERATIVA APOSTOL SANTIAGO</h2>
-					<p>FLUJO ACTUAL DE DOCUMENTOS</p>
+					<p>DOCUMENTOS COMPLETADOS</p>
 				</div>
 			</div>
 			<div class="row">
 
 
-			<center><p>FLUJO ACTUAL</p></center>
+			<center><p>COMPLETADOS</p></center>
 
 				<div class="table-responsive">          
 					<table class="table">
@@ -73,10 +74,10 @@
                             <th>N° hoja de ruta</th>
 							<th>Tipo de Solicitud</th>
 							<th>Solicitante</th>
-							<th>Area Procedencia</th>
-                            <th>Usuario que envio</th>
-                            <th>Area Destino</th>
-                            <th>Fecha enviada</th>
+							<th>Ultima Area</th>
+                            <th>Ultimo Usuario</th>
+                            <!--th>Area Destino</th-->
+                            <th>Fecha Terminada</th>
                             <th>Ver Documento</th>
 
 							<!--th>Fecha de Salida</th>
@@ -91,8 +92,29 @@
 
                             require("conexion.php");
 
-							$destinoArea=100;
-							$sql=("SELECT * FROM flujo_actual WHERE id_area_destino!=$destinoArea");
+                            $variableTerminado=100;
+                            
+
+                            /*if($rol == 1){
+                                //consulta para todos los flujos terminados
+                                $sql=("SELECT * FROM flujo_actual WHERE id_area_destino = '$variableTerminado'");
+                            }else{
+                                //consulta para todos los demas terminados
+                                $sql=("SELECT * FROM flujo_actual WHERE id_area_destino = '$variableTerminado' AND id_area_procedencia='$ses'");
+                            }*/
+
+
+                            if($rol == 1){
+                                //consulta para todos los flujos terminados
+                                $sql=("SELECT * FROM documentos_completados WHERE id_area_destino = '$variableTerminado'");
+                            }else{
+                                //consulta para todos los demas terminados
+                                $sql=("SELECT * FROM documentos_completados WHERE id_area_destino = '$variableTerminado' AND id_area_procedencia='$ses'");
+                            }
+
+
+							
+							//$sql=("SELECT * FROM flujo_actual");
 
 							$query=mysqli_query($mysqli,$sql);
 							
@@ -101,7 +123,7 @@
 
 							while($arreglo=mysqli_fetch_array($query)){
 
-                                $sql4=("SELECT documento_subido.nombre_archivo, documento_subido.directorio FROM documento_subido WHERE documento_subido.id_flujo_subido = $arreglo[0]");
+                                $sql4=("SELECT documento_subido.nombre_archivo, documento_subido.directorio FROM documento_subido WHERE documento_subido.id_flujo_subido = $arreglo[10]");
 
 								$nombre_archivo = '';
 								$directorio_archivo = '';
@@ -120,8 +142,8 @@
                                     echo "<td>$arreglo[3]</td>";
                                     echo "<td>$arreglo[4]</td>";
                                     echo "<td>$arreglo[5]</td>";
-                                    echo "<td>$arreglo[6]</td>";
-                                    echo "<td>$arreglo[7]</td>";
+                                    //echo "<td>$arreglo[6]</td>";
+                                    echo "<td>$arreglo[9]</td>";
                                     echo "<td><button class='btn btn-dark'><a href='verpdf.php?nombreA=$nombre_archivo&directorioA=$directorio_archivo' target='_blank'>Ver documento</a></button></td>";
 
                                 echo "</tr>";

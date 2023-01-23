@@ -190,11 +190,26 @@ descripcion_solicitud*/
 
 
 CREATE VIEW `documentos_destino`
-	AS SELECT flujo_procedimiento.`id_flujo` AS id_flujo_prc, procedimiento.`codigo_hoja_ruta`, tipo_procedimiento.`nombre_tipo_procedimiento`, procedimiento.`solicitante`, areas.`nombre_area`, usuarios.`nombre_usuario`, flujo_procedimiento.id_area_procedencia, flujo_procedimiento.id_area_destino, procedimiento.descripcion_solicitud
+	AS SELECT flujo_procedimiento.`id_flujo` AS id_flujo_prc, procedimiento.`codigo_hoja_ruta`, tipo_procedimiento.`nombre_tipo_procedimiento`, procedimiento.`solicitante`, areas.`nombre_area`, usuarios.`nombre_usuario`, flujo_procedimiento.id_area_procedencia, flujo_procedimiento.id_area_destino, procedimiento.descripcion_solicitud, flujo_procedimiento.fecha_subido, flujo_procedimiento.id_flujo_padre
     FROM `flujo_procedimiento` INNER JOIN `procedimiento` ON flujo_procedimiento.id_procedimiento_flujo = procedimiento.id_procedimiento
     INNER JOIN `areas` ON flujo_procedimiento.id_area_destino = areas.id_area
     INNER JOIN `usuarios` ON flujo_procedimiento.id_usuario_envia = usuarios.ci
-    INNER JOIN `tipo_procedimiento` ON procedimiento.id_tipo_procedimiento_realizado = tipo_procedimiento.id_tipo_procedimiento;
+    INNER JOIN `tipo_procedimiento` ON procedimiento.id_tipo_procedimiento_realizado = tipo_procedimiento.id_tipo_procedimiento WHERE flujo_procedimiento.estado_rev=2;
+
+
+CREATE VIEW `documentos_completados`
+	AS SELECT flujo_procedimiento.`id_flujo` AS id_flujo_prc, procedimiento.`codigo_hoja_ruta`, tipo_procedimiento.`nombre_tipo_procedimiento`, procedimiento.`solicitante`, areas.`nombre_area`, usuarios.`nombre_usuario`, flujo_procedimiento.id_area_procedencia, flujo_procedimiento.id_area_destino, procedimiento.descripcion_solicitud, flujo_procedimiento.fecha_subido, flujo_procedimiento.id_flujo_padre
+    FROM `flujo_procedimiento` INNER JOIN `procedimiento` ON flujo_procedimiento.id_procedimiento_flujo = procedimiento.id_procedimiento
+    INNER JOIN `areas` ON flujo_procedimiento.id_area_procedencia = areas.id_area
+    INNER JOIN `usuarios` ON flujo_procedimiento.id_usuario_envia = usuarios.ci
+    INNER JOIN `tipo_procedimiento` ON procedimiento.id_tipo_procedimiento_realizado = tipo_procedimiento.id_tipo_procedimiento WHERE flujo_procedimiento.estado_rev=3 AND flujo_procedimiento.id_area_destino=100;
+
+CREATE VIEW `documentos_terminados`
+	AS SELECT flujo_procedimiento.`id_flujo` AS id_flujo_prc, procedimiento.`codigo_hoja_ruta`, tipo_procedimiento.`nombre_tipo_procedimiento`, procedimiento.`solicitante`, areas.`nombre_area`, usuarios.`nombre_usuario`, flujo_procedimiento.id_area_procedencia, flujo_procedimiento.id_area_destino, procedimiento.descripcion_solicitud, flujo_procedimiento.fecha_subido, flujo_procedimiento.id_flujo_padre
+    FROM `flujo_procedimiento` INNER JOIN `procedimiento` ON flujo_procedimiento.id_procedimiento_flujo = procedimiento.id_procedimiento
+    INNER JOIN `areas` ON flujo_procedimiento.id_area_procedencia = areas.id_area
+    INNER JOIN `usuarios` ON flujo_procedimiento.id_usuario_envia = usuarios.ci
+    INNER JOIN `tipo_procedimiento` ON procedimiento.id_tipo_procedimiento_realizado = tipo_procedimiento.id_tipo_procedimiento WHERE flujo_procedimiento.estado_rev=4 AND flujo_procedimiento.id_area_destino=100;
 
 
 
