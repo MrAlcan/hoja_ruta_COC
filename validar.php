@@ -14,6 +14,13 @@ session_start();
 		if($pass==$f2['contrasena']){
             if($rolsec==$f2['id_area_usuario']){
 
+				$areauser = $f2['id_area_usuario'];
+
+				$sql3 = mysqli_query($mysqli,"SELECT * FROM areas WHERE id_area='$areauser'");
+				if($f3=mysqli_fetch_assoc($sql3)){
+					$_SESSION['nombre_area_usuario']=$f3['nombre_area'];
+				}
+
                 $_SESSION['id']=$f2['ci'];
                 $_SESSION['user']=$f2['username'];
                 $_SESSION['rol']=$f2['id_rol_usuario'];
@@ -41,6 +48,13 @@ session_start();
 	$sql=mysqli_query($mysqli,"SELECT * FROM usuarios WHERE correo='$username'");
 	if($f=mysqli_fetch_assoc($sql)){
 		if($pass==$f['contrasena']){
+
+			$areauser = $f2['id_area_usuario'];
+
+			$sql4 = mysqli_query($mysqli,"SELECT * FROM areas WHERE id_area='$areauser'");
+			if($f4=mysqli_fetch_assoc($sql4)){
+				$_SESSION['nombre_area_usuario']=$f4['nombre_area'];
+			}
 			$_SESSION['id']=$f['ci'];
 			$_SESSION['user']=$f['username'];
 			$_SESSION['rol']=$f['id_rol_usuario'];

@@ -16,6 +16,17 @@
 
 </head>
 <body>
+	<?php
+        session_start();
+
+        if($_SESSION['area']){
+            $ses = $_SESSION['area'];
+            $rol = $_SESSION['rol'];
+        }else{
+            echo "<script>location.href='index.html'</script>";
+        }
+        echo "<script>console.log($ses)</script>";
+    ?>
 
     <nav class="gtco-nav" role="navigation">
 		<div class="gtco-container">
@@ -26,18 +37,11 @@
 				</div>
 				<div class="col-xs-8 text-right menu-1">
 					<ul>
+						<li><a href="inicio.php">Inicio</a></li>
                         <?php
-                            session_start();
-                            $ses = $_SESSION['area'];
                             if($ses == 1){
                                 echo "<li><a href='nuevo.php'>Nuevo registro</a></li>";
                             }
-                            
-                        
-                        
-                
-                            
-                            $rol = $_SESSION['rol'];
                             
                             
 
@@ -47,11 +51,11 @@
 
                         ?>
 						
-						<li><a href="inicio.php">Inicio</a></li>
-						<li><a href='completados.php'>Completados</a></li>
-						<li><a href='terminados.php'>Terminados</a></li>
 						<li><a href="pendientes.php">Pendientes</a></li>
 						<li><a href="enviados.php">Enviados</a></li>
+						<li><a href='completados.php'>Completados</a></li>
+						<li><a href='terminados.php'>Terminados</a></li>
+						
 						<li><a href="desconectar.php"><font color="black">Salir</font></a></li>
 					</ul>
 				</div>
