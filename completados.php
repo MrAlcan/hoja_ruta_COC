@@ -29,45 +29,40 @@
         echo "<script>console.log($ses)</script>";
     ?>
 
-    <nav class="gtco-nav" role="navigation">
-		<div class="gtco-container">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-success" role="navigation">
+		<div class="container-fluid">
 			
-			<div class="row">
-				<div class="col-sm-4 col-xs-12">
-					<div id="gtco-logo"><a href="index.html">Cooperativa <em> Apostol Santiago</em></a></div>
-				</div>
-                <div class="col-sm-4 col-xs-12">
+			<div class="row navbar-brand">
+					<div id="gtco-logo" class="col"><a href="index.html" class="navbar-brand">Cooperativa <em> Apostol Santiago</em></a></div>
                     <?php
-                        echo "<div id='gtco-logo'>$area_usuario</div>";
+                        echo "<div id='gtco-logo' class='col'>$area_usuario</div>";
                     ?>		
-				</div>
-				<div class="col-xs-8 text-right menu-1">
-					<ul>
-                        <li><a href="inicio.php">Inicio</a></li>
-                        
-                        <?php
-                            
-
-                            if($ses == 1){
-                                echo "<li><a href='nuevo.php'>Nuevo registro</a></li>";
-								echo "<li><a href='flujoActual.php'>Flujo actual</a></li>";
-                            }
-							if($rol == 1 && $ses==100){
-                                echo "<li><a href='flujoActual.php'>Flujo actual</a></li>";
-                            }else{
-                                echo "<li><a href='pendientes.php'>Pendientes</a></li>";
-                                echo "<li><a href='enviados.php'>Enviados</a></li>";
-                            }
-
-                        ?>
-                        <li><a href='completados.php'>Completados</a></li>
-                        <li><a href='terminados.php'>Terminados</a></li>
-						
-						<li><a href="desconectar.php"><font color="black">Salir</font></a></li>
-					</ul>
-				</div>
 			</div>
-			
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+				<ul class="navbar-nav justify-content-end">
+                    <li class='nav-item'><a href="inicio.php" class="nav-link" aria-current="page">Inicio</a></li>
+                    <?php
+                        if($ses == 1){
+                            echo "<li class='nav-item'><a href='nuevo.php' class='nav-link' aria-current='page'>Nuevo registro</a></li>";
+							echo "<li class='nav-item'><a href='flujoActual.php' class='nav-link' aria-current='page'>Flujo actual</a></li>";
+                        }
+						if($rol == 1 && $ses==100){
+                            echo "<li class='nav-item'><a href='flujoActual.php' class='nav-link' aria-current='page'>Flujo actual</a></li>";
+                        }else{
+                            echo "<li class='nav-item'><a href='pendientes.php' class='nav-link' aria-current='page'>Pendientes</a></li>";
+                            echo "<li class='nav-item'><a href='enviados.php' class='nav-link' aria-current='page'>Enviados</a></li>";
+                        }
+                    ?>
+                    <li class='nav-item'><a href='completados.php' class='nav-link active' aria-current='page'>Completados</a></li>
+                    <li class='nav-item'><a href='terminados.php' class='nav-link' aria-current='page'>Terminados</a></li>
+					<li class='nav-item'><a href="desconectar.php" class='nav-link' aria-current='page'><font color="red">Salir</font></a></li>
+				</ul>
+			</div>
 		</div>
 	</nav>
 
