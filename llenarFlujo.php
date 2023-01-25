@@ -43,15 +43,22 @@ $db = mysqli_select_db($conexion, $basededatos) or die ("Error conexion al conec
             $aux=$aux+1;
         }
     }
-
+/*
     if($boton=='Completar'){
         $sql_8 = "UPDATE `flujo_procedimiento` SET `estado_rev`=3 WHERE `id_flujo`=$n_flujo_aaa";
     }else if($boton=='Cerrar'){
         $sql_8 = "UPDATE `flujo_procedimiento` SET `estado_rev`=4 WHERE `id_flujo`=$n_flujo_aaa";
     }else{
         $sql_8 = "UPDATE `flujo_procedimiento` SET `estado_rev`=2 WHERE `id_flujo`=$n_flujo_aaa";
-    }
+    }*/
 
+    if($boton=='Completar'){
+        $sql_8 = "UPDATE `flujo_procedimiento` SET `estado_rev`=2 WHERE `id_flujo`=$n_flujo_aaa";
+    }else if($boton=='Cerrar'){
+        $sql_8 = "UPDATE `flujo_procedimiento` SET `estado_rev`=2 WHERE `id_flujo`=$n_flujo_aaa";
+    }else{
+        $sql_8 = "UPDATE `flujo_procedimiento` SET `estado_rev`=2 WHERE `id_flujo`=$n_flujo_aaa";
+    }
 
     //$sql_8 = "UPDATE `flujo_procedimiento` SET `estado_rev`=2 WHERE `id_flujo`=$n_flujo_aaa";
     $ejecutar_8 = mysqli_query($conexion, $sql_8);

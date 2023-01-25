@@ -134,6 +134,26 @@ ALTER TABLE documento_subido
 
 
 
+CREATE TABLE modificaciones(
+    id_modificacion INT NOT NULL,
+    fecha_solicitud TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    descripcion_modificacion TEXT,
+    id_estado_modificacion INT NOT NULL DEFAULT 5,
+    id_flujo_modificacion INT NOT NULL,
+    id_usuario_modificacion INT NOT NULL,
+    FOREIGN KEY (id_flujo_modificacion) REFERENCES flujo_procedimiento(id_flujo),
+    FOREIGN KEY (id_usuario_modificacion) REFERENCES usuarios(ci),
+    FOREIGN KEY (id_estado_modificacion) REFERENCES estados_flujos(id_estados_flujos)
+);
+
+ALTER TABLE modificaciones
+    ADD PRIMARY KEY (id_modificacion);
+
+ALTER TABLE modificaciones
+    MODIFY id_modificacion INT NOT NULL AUTO_INCREMENT;
+
+
+
 
 
 -- SELECT * FROM flujo_procedimiento WHERE id_area_procedencia!=2 AND id_area_destino=2;
@@ -190,26 +210,36 @@ descripcion_solicitud*/
 
 
 CREATE VIEW `documentos_destino`
-	AS SELECT flujo_procedimiento.`id_flujo` AS id_flujo_prc, procedimiento.`codigo_hoja_ruta`, tipo_procedimiento.`nombre_tipo_procedimiento`, procedimiento.`solicitante`, areas.`nombre_area`, usuarios.`nombre_usuario`, flujo_procedimiento.id_area_procedencia, flujo_procedimiento.id_area_destino, procedimiento.descripcion_solicitud, flujo_procedimiento.fecha_subido, flujo_procedimiento.id_flujo_padre
+	AS SELECT flujo_procedimiento.`id_flujo` AS id_flujo_prc, procedimiento.`codigo_hoja_ruta`, tipo_procedimiento.`nombre_tipo_procedimiento`, procedimiento.`solicitante`, areas.`nombre_area`, usuarios.`nombre_usuario`, flujo_procedimiento.id_area_procedencia, flujo_procedimiento.id_area_destino, procedimiento.descripcion_solicitud, flujo_procedimiento.fecha_subido, flujo_procedimiento.id_flujo_padre, procedimiento.gestion
     FROM `flujo_procedimiento` INNER JOIN `procedimiento` ON flujo_procedimiento.id_procedimiento_flujo = procedimiento.id_procedimiento
     INNER JOIN `areas` ON flujo_procedimiento.id_area_destino = areas.id_area
     INNER JOIN `usuarios` ON flujo_procedimiento.id_usuario_envia = usuarios.ci
-    INNER JOIN `tipo_procedimiento` ON procedimiento.id_tipo_procedimiento_realizado = tipo_procedimiento.id_tipo_procedimiento WHERE flujo_procedimiento.estado_rev=2;
+    INNER JOIN `tipo_procedimiento` ON procedimiento.id_tipo_procedimiento_realizado = tipo_procedimiento.id_tipo_procedimiento WHERE flujo_procedimiento.estado_rev!=3 AND flujo_procedimiento.estado_rev!=4 AND id_area_procedencia!=id_area_destino;
 
 
 CREATE VIEW `documentos_completados`
-	AS SELECT flujo_procedimiento.`id_flujo` AS id_flujo_prc, procedimiento.`codigo_hoja_ruta`, tipo_procedimiento.`nombre_tipo_procedimiento`, procedimiento.`solicitante`, areas.`nombre_area`, usuarios.`nombre_usuario`, flujo_procedimiento.id_area_procedencia, flujo_procedimiento.id_area_destino, procedimiento.descripcion_solicitud, flujo_procedimiento.fecha_subido, flujo_procedimiento.id_flujo_padre
+	AS SELECT flujo_procedimiento.`id_flujo` AS id_flujo_prc, procedimiento.`codigo_hoja_ruta`, tipo_procedimiento.`nombre_tipo_procedimiento`, procedimiento.`solicitante`, areas.`nombre_area`, usuarios.`nombre_usuario`, flujo_procedimiento.id_area_procedencia, flujo_procedimiento.id_area_destino, procedimiento.descripcion_solicitud, flujo_procedimiento.fecha_subido, flujo_procedimiento.id_flujo_padre, procedimiento.gestion
     FROM `flujo_procedimiento` INNER JOIN `procedimiento` ON flujo_procedimiento.id_procedimiento_flujo = procedimiento.id_procedimiento
     INNER JOIN `areas` ON flujo_procedimiento.id_area_procedencia = areas.id_area
     INNER JOIN `usuarios` ON flujo_procedimiento.id_usuario_envia = usuarios.ci
     INNER JOIN `tipo_procedimiento` ON procedimiento.id_tipo_procedimiento_realizado = tipo_procedimiento.id_tipo_procedimiento WHERE flujo_procedimiento.estado_rev=3 AND flujo_procedimiento.id_area_destino=100;
 
 CREATE VIEW `documentos_terminados`
-	AS SELECT flujo_procedimiento.`id_flujo` AS id_flujo_prc, procedimiento.`codigo_hoja_ruta`, tipo_procedimiento.`nombre_tipo_procedimiento`, procedimiento.`solicitante`, areas.`nombre_area`, usuarios.`nombre_usuario`, flujo_procedimiento.id_area_procedencia, flujo_procedimiento.id_area_destino, procedimiento.descripcion_solicitud, flujo_procedimiento.fecha_subido, flujo_procedimiento.id_flujo_padre
+	AS SELECT flujo_procedimiento.`id_flujo` AS id_flujo_prc, procedimiento.`codigo_hoja_ruta`, tipo_procedimiento.`nombre_tipo_procedimiento`, procedimiento.`solicitante`, areas.`nombre_area`, usuarios.`nombre_usuario`, flujo_procedimiento.id_area_procedencia, flujo_procedimiento.id_area_destino, procedimiento.descripcion_solicitud, flujo_procedimiento.fecha_subido, flujo_procedimiento.id_flujo_padre, procedimiento.gestion
     FROM `flujo_procedimiento` INNER JOIN `procedimiento` ON flujo_procedimiento.id_procedimiento_flujo = procedimiento.id_procedimiento
     INNER JOIN `areas` ON flujo_procedimiento.id_area_procedencia = areas.id_area
     INNER JOIN `usuarios` ON flujo_procedimiento.id_usuario_envia = usuarios.ci
     INNER JOIN `tipo_procedimiento` ON procedimiento.id_tipo_procedimiento_realizado = tipo_procedimiento.id_tipo_procedimiento WHERE flujo_procedimiento.estado_rev=4 AND flujo_procedimiento.id_area_destino=100;
+
+CREATE VIEW documentos_modificacion
+    AS SELECT modificaciones.id_modificacion, modificaciones.fecha_solicitud, modificaciones.descripcion_modificacion, modificaciones.id_estado_modificacion, modificaciones.id_flujo_modificacion, flujo_procedimiento.id_procedimiento_flujo, usuarios.nombre_usuario, areas.nombre_area, procedimiento.codigo_hoja_ruta, procedimiento.gestion, procedimiento.solicitante, tipo_procedimiento.nombre_tipo_procedimiento
+    FROM modificaciones
+    INNER JOIN flujo_procedimiento ON modificaciones.id_flujo_modificacion=flujo_procedimiento.id_flujo
+    INNER JOIN procedimiento ON flujo_procedimiento.id_procedimiento_flujo=procedimiento.id_procedimiento
+    INNER JOIN tipo_procedimiento ON procedimiento.id_tipo_procedimiento_realizado=tipo_procedimiento.id_tipo_procedimiento
+    INNER JOIN usuarios ON modificaciones.id_usuario_modificacion=usuarios.ci
+    INNER JOIN areas ON usuarios.id_area_usuario=areas.id_area;
+
 
 
 

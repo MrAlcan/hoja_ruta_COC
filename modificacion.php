@@ -53,11 +53,11 @@
 						}
                         if($rol == 1){
 							echo "<li class='nav-item'><a href='flujoActual.php' class='nav-link' aria-current='page'>Flujo actual</a></li>";
-							echo "<li class='nav-item'><a href='modificacion.php' class='nav-link' aria-current='page'>Modificaciones</a></li>";
+							echo "<li class='nav-item'><a href='modificacion.php' class='nav-link active' aria-current='page'>Modificaciones</a></li>";
                         }
                     ?>
 					<li class='nav-item'><a href='pendientes.php' class='nav-link' aria-current='page'>Pendientes</a></li>
-                    <li class='nav-item'><a href='enviados.php' class='nav-link active' aria-current='page'>Enviados</a></li>
+                    <li class='nav-item'><a href='enviados.php' class='nav-link' aria-current='page'>Enviados</a></li>
                     <li class='nav-item'><a href='completados.php' class='nav-link' aria-current='page'>Completados</a></li>
                     <li class='nav-item'><a href='terminados.php' class='nav-link' aria-current='page'>Terminados</a></li>
 					<li class='nav-item'><a href="desconectar.php" class='nav-link' aria-current='page'><font color="red">Salir</font></a></li>
@@ -71,13 +71,13 @@
 			<div class="row">
 				<div class="col-md-8 col-md-offset-2 text-center gtco-heading">
 					<h2>COOPERATIVA APOSTOL SANTIAGO</h2>
-					<p>DOCUMENTOS ENVIADOS</p>
+					<p>DOCUMENTOS CON SOLICITUD DE CAMBIO</p>
 				</div>
 			</div>
 			<div class="row">
 
 
-			<center><p>ENVIADOS</p></center>
+			<center><p>SOLICITUDES</p></center>
 
 				<div class="table-responsive">          
 					<table class="table">
@@ -86,8 +86,8 @@
                             <th>N° hoja de ruta</th>
 							<th>Tipo de Solicitud</th>
 							<th>Solicitante</th>
-							<th>Area Enviada</th>
-							<th>Ver Documento</th>
+							<th>Area Solicitud</th>
+                            <th>Fecha de Solicitud</th>
 							<th>Modificar</th>
 							<!--th>Fecha de Salida</th>
 							<th>Hora de Salida</th>
@@ -106,7 +106,7 @@
 							
 
 							
-							$sql=("SELECT * FROM documentos_destino WHERE id_area_procedencia=$ses /*AND id_area_destino!=$destinoArea */AND id_area_destino!=$ses");
+							$sql=("SELECT * FROM documentos_modificacion");
 
 							$query=mysqli_query($mysqli,$sql);
 							
@@ -119,17 +119,22 @@
 
 								$num = $num + 1;
 
-								$id_flujo_env = $arreglo[0];
+								$id_flujo_env = $arreglo['id_flujo_modificacion'];
 
-								$sql_3 = "SELECT estado_rev FROM flujo_procedimiento WHERE id_flujo=$id_flujo_env";
-								$query_3 = mysqli_query($mysqli,$sql_3);
-								$arreglo_3 = mysqli_fetch_assoc($query_3);
-								$estado_env = $arreglo_3['estado_rev'];
+                                $sql_3 = "SELECT * FROM flujo_procedimiento WHERE id_flujo_padre=$id_flujo_env";
+                                $query_3 = mysqli_query($mysqli,$sql_3);
+                                $id_hijo;
+                                while($arreglo_3=mysqli_fetch_array($query_3)){
+                                    $id_hijo=$arreglo_3['id_flujo'];
+                                }
 
-								$id_padre = $arreglo['id_flujo_padre'];
-								$fecha_enviada =$arreglo['fecha_subido'];
 
-								$sql4=("SELECT documento_subido.nombre_archivo, documento_subido.directorio FROM documento_subido WHERE documento_subido.id_flujo_subido = $arreglo[10]");
+								$estado_env = $arreglo['id_estado_modificacion'];
+
+								//$id_padre = $arreglo['id_flujo_padre'];
+								$fecha_enviada =$arreglo['fecha_solicitud'];
+
+								$sql4=("SELECT documento_subido.nombre_archivo, documento_subido.directorio FROM documento_subido WHERE documento_subido.id_flujo_subido = $id_flujo_env");
 
 								$nombre_archivo = '';
 								$directorio_archivo = '';
@@ -148,7 +153,7 @@
 								*/
 
 								$n_flujo_padre_2 = -1;
-								$n_flujo_hijo_2 = $arreglo[0];
+								$n_flujo_hijo_2 = $id_hijo;
 
 								$observaciones_areas_2 = [];
 								$observaciones_observaciones_2 = [];
@@ -177,28 +182,35 @@
 								$nombre_modal_form = 'exampleModalForm' . $num;
 								$referencia_form = '#' . $nombre_modal_form;
 
-								$n_registro_a = $arreglo[1];
-								$gestion = $arreglo[11];
-								$tipo_procedimiento_a = $arreglo[2];
-								$solicitante_a = $arreglo[3];
+								$n_registro_a = $arreglo['codigo_hoja_ruta'];
+								$gestion = $arreglo['gestion'];
+								$tipo_procedimiento_a = $arreglo['nombre_tipo_procedimiento'];
+								$solicitante_a = $arreglo['solicitante'];
 								$descripcion_a = $arreglo['descripcion_solicitud'];
-								$fecha_enviada = $arreglo['fecha_subido'];
+								$fecha_enviada = $arreglo['fecha_solicitud'];
+                                $area_solicitud = $arreglo['nombre_area'];
+                                $descripcion_cambio = $arreglo['descripcion_modificacion'];
 
 
 							
 
                                 echo "<tr>";
                                     //echo "<td>$num</td>";
-                                    echo "<td>$arreglo[1]/$arreglo[11]</td>";
-                                    echo "<td>$arreglo[2]</td>";
-                                    echo "<td>$arreglo[3]</td>";
-                                    echo "<td>$arreglo[4]</td>";
-									echo "<td><button type='button' class='btn btn-primary' data-bs-toggle='modal' data-bs-target=$referencia_pendientes>
+                                    echo "<td>$n_registro_a/$gestion</td>";
+                                    echo "<td>$tipo_procedimiento_a</td>";
+                                    echo "<td>$solicitante_a</td>";
+                                    echo "<td>$area_solicitud</td>";
+                                    echo "<td>$fecha_enviada</td>";
+									/*echo "<td><button type='button' class='btn btn-primary' data-bs-toggle='modal' data-bs-target=$referencia_pendientes>
 									Ver progreso
-								  </button></td>";
+								  </button></td>";*/
 
 								  	if($estado_env==5){
-										echo "<td>Solicitud en revision</td>";
+										echo "<td><button type='button' class='btn btn-primary' data-bs-toggle='modal' data-bs-target=$referencia_form>
+                                        Ver Solicitud
+                                      </button><button type='button' class='btn btn-danger'>
+                                      Rechazar Solicitud
+                                    </button></td>";
 									}else if($estado_env==6){
 										echo "<td>Solicitud Aceptada</td>";
 									}else if($estado_env==7){
@@ -264,10 +276,12 @@
 												<input type='text' class='form-control' value='$descripcion_a' disabled>
 												<h5>Observaciones</h5>
 												<textarea type='text' class='form-control' value='$observaciones_totales_2' disabled>$observaciones_totales_2</textarea>
+                                                <h5>Descripcion solicitud</h5>
+												<textarea type='text' class='form-control' value='$descripcion_cambio' disabled>$descripcion_cambio</textarea>
 												<h5>Ver documento</h5>
 												<button class='btn btn-dark'><a href='verpdf.php?nombreA=$nombre_archivo&directorioA=$directorio_archivo' target='_blank'>Ver documento</a></button>";
 												?>
-												<form enctype='multipart/form-data'  <?php echo "action='llenarModificacion.php?id_flujo_cambio=$id_padre&id_usuario_cambio=$id_usuario'";?> name="form" method="POST">
+												<!--form enctype='multipart/form-data'  <?php //echo "action='llenarModificacion.php?id_flujo_cambio=$id_padre&id_usuario_cambio=$id_usuario'";?> name="form" method="POST">
 												
 													<div class="row form-group">
 														<div class="col-md-12">
@@ -282,13 +296,13 @@
 														</div>
 													</div>
 											
-												</form>
+												</form-->
 										
 										<?php
 										echo	"</div>
 											<div class='modal-footer'>
 											<button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Cerrar</button>
-											<!--button type='button' class='btn btn-primary'>Save changes</button-->
+											<button type='button' class='btn btn-primary'>Aceptar solicitud</button>
 											</div>
 										</div>
 									</div>

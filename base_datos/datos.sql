@@ -27,6 +27,9 @@ INSERT INTO `tipo_procedimiento`(`id_tipo_procedimiento`,`nombre_tipo_procedimie
 INSERT INTO `estados_flujos`(`id_estados_flujos`,`descripcion_estados_flujos`) VALUES (1,'Pendiente'),
 (2,'Revisado'),
 (3,'Completado'),
-(4,'Cerrado');
+(4,'Cerrado'),
+(5,'Modificacion Pendiente Revision'),
+(6,'Modificacion Aceptada'),
+(7,'Modificacion Rechazada');
 
 INSERT INTO `procedimiento`(`codigo_hoja_ruta`,`fecha_creada`,`solicitante`,`descripcion_solicitud`,`id_area_creada`,`id_tipo_procedimiento_realizado`) VALUES (0,'','','',1,1);
