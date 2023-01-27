@@ -30,7 +30,7 @@
     ?>
 
 	<nav class="navbar navbar-expand-lg navbar-dark bg-success" role="navigation">
-		<div class="container-fluid">
+		<div class="container-fluid m-2">
 			
 			<div class="row navbar-brand">
 					<div id="gtco-logo" class="col"><a href="index.html" class="navbar-brand">Cooperativa <em> Apostol Santiago</em></a></div>
@@ -65,7 +65,7 @@
 
     
 
-    <div class="tab-content">
+    <div class="tab-content m-5">
 		<div class="tab-content-inner active m-5" data-content="signup">
 			<h3>Registra el nuevo registro</h3>
 

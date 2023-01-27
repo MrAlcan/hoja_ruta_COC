@@ -30,7 +30,7 @@
     ?>
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-success" role="navigation">
-		<div class="container-fluid">
+		<div class="container-fluid m-2">
 			
 			<div class="row navbar-brand">
 					<div id="gtco-logo" class="col"><a href="index.html" class="navbar-brand">Cooperativa <em> Apostol Santiago</em></a></div>
@@ -69,7 +69,7 @@
 
     
 
-    <div class="gtco-section border-bottom">
+    <div class="gtco-section border-bottom m-5">
 		<div class="gtco-container">
 			<div class="row">
 				<div class="col-md-8 col-md-offset-2 text-center gtco-heading">
