@@ -232,7 +232,7 @@ CREATE VIEW `documentos_terminados`
     INNER JOIN `tipo_procedimiento` ON procedimiento.id_tipo_procedimiento_realizado = tipo_procedimiento.id_tipo_procedimiento WHERE flujo_procedimiento.estado_rev=4 AND flujo_procedimiento.id_area_destino=100;
 
 CREATE VIEW documentos_modificacion
-    AS SELECT modificaciones.id_modificacion, modificaciones.fecha_solicitud, modificaciones.descripcion_modificacion, modificaciones.id_estado_modificacion, modificaciones.id_flujo_modificacion, flujo_procedimiento.id_procedimiento_flujo, usuarios.nombre_usuario, areas.nombre_area, procedimiento.codigo_hoja_ruta, procedimiento.gestion, procedimiento.solicitante, tipo_procedimiento.nombre_tipo_procedimiento
+    AS SELECT modificaciones.id_modificacion, modificaciones.fecha_solicitud, modificaciones.descripcion_modificacion, modificaciones.id_estado_modificacion, modificaciones.id_flujo_modificacion, flujo_procedimiento.id_procedimiento_flujo, usuarios.nombre_usuario, areas.nombre_area, procedimiento.codigo_hoja_ruta, procedimiento.gestion, procedimiento.solicitante, tipo_procedimiento.nombre_tipo_procedimiento, procedimiento.descripcion_solicitud
     FROM modificaciones
     INNER JOIN flujo_procedimiento ON modificaciones.id_flujo_modificacion=flujo_procedimiento.id_flujo
     INNER JOIN procedimiento ON flujo_procedimiento.id_procedimiento_flujo=procedimiento.id_procedimiento

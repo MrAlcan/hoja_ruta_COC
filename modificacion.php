@@ -118,6 +118,7 @@
 								
 
 								$num = $num + 1;
+								$id_modificacion = $arreglo[0];
 
 								$id_flujo_env = $arreglo['id_flujo_modificacion'];
 
@@ -206,11 +207,10 @@
 								  </button></td>";*/
 
 								  	if($estado_env==5){
-										echo "<td><button type='button' class='btn btn-primary' data-bs-toggle='modal' data-bs-target=$referencia_form>
+										echo "<td><button type='button' class='btn btn-primary col' data-bs-toggle='modal' data-bs-target=$referencia_form>
                                         Ver Solicitud
-                                      </button><button type='button' class='btn btn-danger'>
-                                      Rechazar Solicitud
-                                    </button></td>";
+                                      </button>";
+									  
 									}else if($estado_env==6){
 										echo "<td>Solicitud Aceptada</td>";
 									}else if($estado_env==7){
@@ -300,9 +300,14 @@
 										
 										<?php
 										echo	"</div>
-											<div class='modal-footer'>
-											<button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Cerrar</button>
-											<button type='button' class='btn btn-primary'>Aceptar solicitud</button>
+											<div class='modal-footer'>";
+										?>
+											<form <?php echo "action='llenarSolicitud.php?id_mod=$id_modificacion&id_flujo=$id_flujo_env&hoja_ruta=$n_registro_a&gestion=$gestion'";?> name="form" method="POST">
+									  			<input type='submit' class='btn btn-danger btn-block' name='botonSolicitud' value='Rechazar'>
+												<input type='submit' class='btn btn-success btn-block' name='botonSolicitud' value='Aceptar'>
+									  		</form></td>
+										<?php
+										echo	"<button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Cerrar</button>
 											</div>
 										</div>
 									</div>

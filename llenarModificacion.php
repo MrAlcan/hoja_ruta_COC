@@ -33,14 +33,14 @@ $db = mysqli_select_db($conexion, $basededatos) or die ("Error conexion al conec
     }else{
         echo "<script>alert('Su registro de modificaciones se realizo correctamente')</script> ";
 
-        $sql_2 = "SELECT id_flujo FROM flujo_procedimiento WHERE id_flujo_padre = $id_flujo";
+        /*$sql_2 = "SELECT id_flujo FROM flujo_procedimiento WHERE id_flujo_padre = $id_flujo";
         $ejecutar_2 = mysqli_query($conexion,$sql_2);
 
         while($arreglo_2 = mysqli_fetch_array($ejecutar_2)){
             $id_flujo_hijo=$arreglo_2['id_flujo'];
             $sql_3 = "UPDATE `flujo_procedimiento` SET `estado_rev`=5 WHERE `id_flujo`=$id_flujo_hijo";
             $ejecutar_3 = mysqli_query($conexion,$sql_3);
-        }
+        }*/
 
         echo "<script>location.href='enviados.php'</script>";
             
