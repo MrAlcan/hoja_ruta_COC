@@ -28,6 +28,9 @@
         echo "<script>console.log($ses)</script>";
     ?>
 
+
+	
+
 	<nav class="navbar navbar-expand-lg navbar-dark bg-success" role="navigation">
 		<div class="container-fluid m-2">
 			
